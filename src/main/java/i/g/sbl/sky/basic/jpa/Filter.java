@@ -1,39 +1,38 @@
 package i.g.sbl.sky.basic.jpa;
 
 import i.g.sbl.sky.basic.jpa.filters.SimpleFilter;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.function.Function;
 
 public interface Filter<T> {
 
     static <T> Filter<T> of() {
-        return of(true);
+        return of(null);
     }
 
-    static <T> Filter<T> of(boolean ignoreBlank) {
-        return new SimpleFilter<T>(ignoreBlank);
+    static <T> Filter<T> of(T instance) {
+        return new SimpleFilter<T>(instance);
     }
 
-    Filter eq(Function<T, ?> property);
+    <R> Filter eq(Function<T, R> property);
 
-    Filter ne(Function<T, ?> property);
+    <R> Filter ne(Function<T, R> property);
 
-    Filter gt(Function<T, ?> property);
+    <R> Filter gt(Function<T, R> property);
 
-    Filter lt(Function<T, ?> property);
+    <R> Filter lt(Function<T, R> property);
 
-    Filter like(Function<T, ?> property);
+    <R> Filter like(Function<T, R> property);
 
-    Filter not(Function<T, ?> property);
+    <R> Filter isNull(Function<T, R> property);
 
-    Filter in(Function<T, ?> property);
+    <R> Filter in(Function<T, R> property);
 
-    Filter notIn(Function<T, ?> property);
+    <R> Filter notIn(Function<T, R> property);
 
-    Filter gte(Function<T, ?> property);
+    <R> Filter gte(Function<T, R> property);
 
-    Filter lte(Function<T, ?> property);
+    <R> Filter lte(Function<T, R> property);
 
     Filter and(Filter<T>... filters);
 

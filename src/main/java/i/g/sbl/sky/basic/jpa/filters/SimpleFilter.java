@@ -9,6 +9,8 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,26 +23,42 @@ public class SimpleFilter<T> implements Filter<T> {
     private T instance;
     private ProxyJpaEntity<T> proxyInstance;
 
-    private boolean ignoreBlank;
+    private boolean ignoreBlank = true;
 
     private EntityManager em;
-    private CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-    CriteriaQuery<T> query = criteriaBuilder.createQuery(entityClass);
-    Root<T> itemRoot = query.from(entityClass);
-    List<Predicate> predicates = new ArrayList<>();
+    private CriteriaBuilder criteriaBuilder;
+    private CriteriaQuery<T> query;
+    private Root<T> root;
+    private List<Predicate> predicates = new ArrayList<>();
 
-    public SimpleFilter(boolean ignoreBlank) {
-        this.ignoreBlank = ignoreBlank;
-        this.proxyInstance = new
+    public SimpleFilter() {
+        this(null);
+    }
+
+    public SimpleFilter(T instance) {
+        if (instance == null) {
+            Type type = this.getClass().getGenericSuperclass();
+            if (type instanceof ParameterizedType parameterizedType) {
+                if (parameterizedType.getActualTypeArguments() != null && parameterizedType.getActualTypeArguments().length > 0) {
+                    this.entityClass = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+                }
+            }
+        } else {
+            this.entityClass = (Class<T>) instance.getClass();
+        }
+        this.proxyInstance = ProxyJpaEntity.getProxyJpaEntity(this.entityClass, this.instance);
+        this.criteriaBuilder = em.getCriteriaBuilder();
+        this.query = criteriaBuilder.createQuery(entityClass);
+        this.root = query.from(entityClass);
     }
 
     @Override
-    public Filter eq(Function<T, ?> property) {
+    public <R> Filter eq(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        Object value = property.apply((T) proxyInstance);
+        R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
             predicates.add(
-                    criteriaBuilder.equal(itemRoot.get(proxyInstance.getCallbackField()), value)
+                    criteriaBuilder.equal(root.get(proxyInstance.getCallbackField()), value)
             );
         }
         return this;
@@ -48,58 +66,110 @@ public class SimpleFilter<T> implements Filter<T> {
 
 
     @Override
-    public Filter ne(Function<T, ?> property) {
+    public <R> Filter ne(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.notEqual(root.get(proxyInstance.getCallbackField()), value)
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter gt(Function<T, ?> property) {
+    public <R> Filter gt(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.greaterThan(root.get(proxyInstance.getCallbackField()), value)
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter lt(Function<T, ?> property) {
+    public <R> Filter lt(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.lessThan(root.get(proxyInstance.getCallbackField()), value)
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter like(Function<T, ?> property) {
+    public <R> Filter gte(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.greaterThanOrEqualTo(root.get(proxyInstance.getCallbackField()), value)
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter not(Function<T, ?> property) {
+    public <R> Filter lte(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.lessThanOrEqualTo(root.get(proxyInstance.getCallbackField()), value)
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter in(Function<T, ?> property) {
+    public <R> Filter like(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.like(root.get(proxyInstance.getCallbackField()), "%" + value + "%")
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter notIn(Function<T, ?> property) {
-        Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+    public <R> Filter isNull(Function<T, R> property) {
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.isNull(root.get(proxyInstance.getCallbackField()))
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter gte(Function<T, ?> property) {
+    public <R> Filter in(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            predicates.add(
+                    criteriaBuilder.like(root.get(proxyInstance.getCallbackField()), "%" + value + "%")
+            );
+        }
+        return this;
     }
 
     @Override
-    public Filter lte(Function<T, ?> property) {
+    public <R> Filter notIn(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
-        return null;
+        R value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+
+        }
+        return this;
     }
+
 
     @Override
     public Filter and(Filter<T>... filters) {
@@ -122,11 +192,11 @@ public class SimpleFilter<T> implements Filter<T> {
             if (value == null) {
                 return true;
             }
-            if (value instanceof CharSequence) {
-                return !StringUtils.hasText((CharSequence) value);
+            if (value instanceof CharSequence text) {
+                return !StringUtils.hasText(text);
             }
-            if (value instanceof Collection) {
-                return ((Collection<?>) value).isEmpty();
+            if (value instanceof Collection collection) {
+                return collection.isEmpty();
             }
             if (value.getClass().isArray()) {
                 return ((Object[]) value).length == 0;
