@@ -13,7 +13,7 @@ public class SpringbootJpaApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringbootJpaApplication.class, args);
         log.info("""
-                                                                          ,,                \s
+                                                                                            \s
                  .M""\"bgd `7MM               `7MM""\"Mq.                  *MM                \s
                 ,MI    "Y   MM                 MM   `MM.                  MM                \s
                 `MMb.       MM  ,MP'`7M'   `MF'MM   ,M9 `7Mb,od8 ,pW"Wq.  MM,dMMb.   .gP"Ya \s

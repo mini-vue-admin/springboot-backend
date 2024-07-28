@@ -14,6 +14,10 @@ public class BusinessException extends RuntimeException{
         this.code = ResponseCode.FAILURE;
     }
 
+    public BusinessException(int code) {
+        this.code = code;
+    }
+
     public BusinessException(String message) {
         super(message);
         this.code = ResponseCode.FAILURE;

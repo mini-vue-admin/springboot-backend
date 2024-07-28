@@ -8,11 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalAdvice {
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ResponseData<Void> handleNoResourceFoundException(NoResourceFoundException e) {
+        return handleException(e);
+    }
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
