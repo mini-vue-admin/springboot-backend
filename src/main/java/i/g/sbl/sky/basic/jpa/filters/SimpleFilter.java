@@ -184,6 +184,105 @@ public class SimpleFilter<T> implements Filter<T> {
         return this;
     }
 
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> eq(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.eq, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> ne(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.ne, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> gt(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.gt, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> lt(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.lt, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> like(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.like, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> in(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op._in, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> notIn(Function<T, R> property, R value) {
+        value = property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.notIn, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> gte(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.gte, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> Filter<T> lte(Function<T, R> property, R value) {
+        property.apply((T) proxyInstance);
+        if (!skip(value)) {
+            this.conditions.add(
+                    new Condition<>(Condition.Op.lte, proxyInstance.getCallbackField(), value)
+            );
+        }
+        return this;
+    }
+
     /**
      * 如果查询条件的属性值为NULL或者空字符串、空数组，则跳过该条件
      *
