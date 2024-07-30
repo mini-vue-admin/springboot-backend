@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 public enum PlanType implements EnumBase<String> {
     simple("simple");
 
-    private String code;
+    private final String code;
 
     PlanType(String code) {
         this.code = code;
@@ -19,7 +19,7 @@ public enum PlanType implements EnumBase<String> {
     }
 
     @Converter(autoApply = true)
-    public static class PlanTypeConverter  extends EnumConverter<PlanType, String> {
+    public static class PlanTypeConverter extends EnumConverter<PlanType, String> {
 
         public PlanTypeConverter() {
             super(PlanType.class);

@@ -12,9 +12,9 @@ import java.util.Arrays;
 
 public interface ProxyJpaEntity<T> {
 
-    public T getOriginInstance();
+    T getOriginInstance();
 
-    public String getCallbackField();
+    String getCallbackField();
 
     static <T> ProxyJpaEntity<T> getProxyJpaEntity(Class<T> clazz, T instance) {
 
@@ -50,9 +50,9 @@ public interface ProxyJpaEntity<T> {
                     || method.getDeclaringClass() == ProxyJpaEntityInterceptor.class) {
                 //ignore
             } else if (method.getDeclaringClass() == ProxyJpaEntity.class) {
-                if (method == ProxyJpaEntity.class.getDeclaredMethod("getOriginInstance")) {
+                if ("getOriginInstance".equals(method.getName())) {
                     return this.instance;
-                } else if (method == ProxyJpaEntity.class.getDeclaredMethod("getCallbackField")) {
+                } else if ("getCallbackField".equals(method.getName())) {
                     return this.curField;
                 } else {
                     throw new IllegalStateException("Can not call method: " + method);
@@ -67,7 +67,7 @@ public interface ProxyJpaEntity<T> {
                         .orElseThrow(
                                 () -> new RuntimeException("Can not find field from method: " + method.getName()));
             }
-            return proxy.invokeSuper(obj, args);
+            return method.invoke(this.instance, args);
         }
     }
 }

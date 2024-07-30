@@ -3,8 +3,6 @@ package i.g.sbl.sky.entity.system;
 import i.g.sbl.sky.basic.cons.Gender;
 import i.g.sbl.sky.basic.cons.Status;
 import i.g.sbl.sky.config.jpa.BaseEntity;
-import i.g.sbl.sky.config.jpa.EnumConverter;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;

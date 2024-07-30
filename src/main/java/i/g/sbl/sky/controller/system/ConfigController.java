@@ -1,5 +1,6 @@
 package i.g.sbl.sky.controller.system;
 
+import i.g.sbl.sky.basic.cons.ConfigType;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.Config;
@@ -7,7 +8,6 @@ import i.g.sbl.sky.service.system.ConfigService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +23,17 @@ public class ConfigController {
 
     @Operation(summary = "列表查询")
     @GetMapping
-    public ResponseData<List<Config>> getList() {
-        List<Config> list = configService.findAll(null);
+    public ResponseData<List<Config>> getList(
+            @RequestParam(name = "configKey", required = false) String configKey,
+            @RequestParam(name = "configName", required = false) String configName,
+            @RequestParam(name = "configType", required = false) ConfigType configType
+    ) {
+        Config config = new Config();
+        config.setConfigKey(configKey);
+        config.setConfigName(configName);
+        config.setConfigType(configType);
+
+        List<Config> list = configService.findAll(config);
         return ResponseData.success(list);
     }
 
@@ -32,9 +41,17 @@ public class ConfigController {
     @GetMapping("page")
     public ResponseData<PageData<Config>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "configKey", required = false) String configKey,
+            @RequestParam(name = "configName", required = false) String configName,
+            @RequestParam(name = "configType", required = false) ConfigType configType
     ) {
-        PageData<Config> page = configService.findAll(null, PageRequest.of(pageIndex, pageSize));
+        Config config = new Config();
+        config.setConfigKey(configKey);
+        config.setConfigName(configName);
+        config.setConfigType(configType);
+
+        PageData<Config> page = configService.findAll(config, PageData.of(pageIndex, pageSize));
         return ResponseData.success(page);
     }
 

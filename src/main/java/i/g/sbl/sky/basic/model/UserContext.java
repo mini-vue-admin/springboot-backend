@@ -1,7 +1,7 @@
 package i.g.sbl.sky.basic.model;
 
 public class UserContext {
-    private static ThreadLocal<DetailedUser> context = new ThreadLocal<DetailedUser>();
+    private static final ThreadLocal<DetailedUser> context = new ThreadLocal<DetailedUser>();
 
     public static DetailedUser getUser() {
         return context.get();

@@ -87,7 +87,7 @@ public class CodeGenerator {
                             "FIELD_NAME", CaseUtils.toCamelCase(columnName),
                             "FIELD_TYPE", CaseUtils.toCamelCase(toFieldType(columnType))
 
-                            ));
+                    ));
 
                 }
                 list.add(root);

@@ -2,7 +2,7 @@ package i.g.sbl.sky.basic.exception;
 
 import i.g.sbl.sky.basic.cons.ResponseCode;
 
-public class NotFoundException extends BusinessException{
+public class NotFoundException extends BusinessException {
     public NotFoundException() {
         super(ResponseCode.NOT_FOUND_ERROR, "Resource not found");
     }

@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 public enum MemberRole implements EnumBase<String> {
     admin("admin"), dev("dev"), viewer("viewer");
 
-    private String code;
+    private final String code;
 
     MemberRole(String code) {
         this.code = code;

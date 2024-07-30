@@ -12,7 +12,7 @@ public enum PlanStatus implements EnumBase<String> {
     hang("hang"),
     stopped("stopped");
 
-    private String code;
+    private final String code;
 
     PlanStatus(String code) {
         this.code = code;
@@ -24,7 +24,7 @@ public enum PlanStatus implements EnumBase<String> {
     }
 
     @Converter(autoApply = true)
-    public static class PlanStatusConverter  extends EnumConverter<PlanStatus, String> {
+    public static class PlanStatusConverter extends EnumConverter<PlanStatus, String> {
 
         public PlanStatusConverter() {
             super(PlanStatus.class);

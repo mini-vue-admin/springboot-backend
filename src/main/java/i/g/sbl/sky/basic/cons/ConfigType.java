@@ -8,7 +8,7 @@ public enum ConfigType implements EnumBase<String> {
 
     system("0"), custom("1");
 
-    private String code;
+    private final String code;
 
     ConfigType(String code) {
         this.code = code;

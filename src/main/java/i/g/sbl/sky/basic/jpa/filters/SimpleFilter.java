@@ -1,7 +1,6 @@
 package i.g.sbl.sky.basic.jpa.filters;
 
 import i.g.sbl.sky.basic.jpa.Filter;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -12,24 +11,20 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
 public class SimpleFilter<T> implements Filter<T> {
 
+    private final List<Condition> conditions;
 
     private Class<T> entityClass;
     private T instance;
-    private ProxyJpaEntity<T> proxyInstance;
+    private final ProxyJpaEntity<T> proxyInstance;
 
-    private boolean ignoreBlank = true;
-
-    private EntityManager em;
-    private CriteriaBuilder criteriaBuilder;
-    private CriteriaQuery<T> query;
-    private Root<T> root;
-    private List<Predicate> predicates = new ArrayList<>();
+    private final boolean ignoreBlank = true;
 
     public SimpleFilter() {
         this(null);
@@ -44,21 +39,21 @@ public class SimpleFilter<T> implements Filter<T> {
                 }
             }
         } else {
+            this.instance = instance;
             this.entityClass = (Class<T>) instance.getClass();
         }
         this.proxyInstance = ProxyJpaEntity.getProxyJpaEntity(this.entityClass, this.instance);
-        this.criteriaBuilder = em.getCriteriaBuilder();
-        this.query = criteriaBuilder.createQuery(entityClass);
-        this.root = query.from(entityClass);
+        this.conditions = new ArrayList<>();
+
     }
 
     @Override
-    public <R> Filter eq(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> eq(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.equal(root.get(proxyInstance.getCallbackField()), value)
+            this.conditions.add(
+                    new Condition<>(Condition.Op.eq, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
@@ -66,119 +61,127 @@ public class SimpleFilter<T> implements Filter<T> {
 
 
     @Override
-    public <R> Filter ne(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> ne(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.notEqual(root.get(proxyInstance.getCallbackField()), value)
+            this.conditions.add(
+                    new Condition<>(Condition.Op.ne, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter gt(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> gt(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.greaterThan(root.get(proxyInstance.getCallbackField()), value)
+            this.conditions.add(
+                    new Condition<>(Condition.Op.gt, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter lt(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter lt(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.lessThan(root.get(proxyInstance.getCallbackField()), value)
+            this.conditions.add(
+                    new Condition<>(Condition.Op.lt, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter gte(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> gte(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.greaterThanOrEqualTo(root.get(proxyInstance.getCallbackField()), value)
+            this.conditions.add(
+                    new Condition<>(Condition.Op.gte, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter lte(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> lte(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.lessThanOrEqualTo(root.get(proxyInstance.getCallbackField()), value)
+            this.conditions.add(
+                    new Condition<>(Condition.Op.lte, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter like(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> like(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.like(root.get(proxyInstance.getCallbackField()), "%" + value + "%")
+            this.conditions.add(
+                    new Condition<>(Condition.Op.like, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter isNull(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> isNull(Function<T, R> property) {
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.isNull(root.get(proxyInstance.getCallbackField()))
+            this.conditions.add(
+                    new Condition<>(Condition.Op.isNull, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter in(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> in(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-            predicates.add(
-                    criteriaBuilder.like(root.get(proxyInstance.getCallbackField()), "%" + value + "%")
+            this.conditions.add(
+                    new Condition<>(Condition.Op._in, proxyInstance.getCallbackField(), value)
             );
         }
         return this;
     }
 
     @Override
-    public <R> Filter notIn(Function<T, R> property) {
+    public <R extends Comparable<? super R>> Filter<T> notIn(Function<T, R> property) {
         Assert.notNull(instance, "Entity instance must not be null");
         R value = property.apply((T) proxyInstance);
         if (!skip(value)) {
-
+            this.conditions.add(
+                    new Condition<>(Condition.Op.notIn, proxyInstance.getCallbackField(), value)
+            );
         }
         return this;
     }
 
 
     @Override
-    public Filter and(Filter<T>... filters) {
-        return null;
+    public Filter<T> and(Filter<?>... filters) {
+        this.conditions.add(
+                new Condition(Condition.Op.or, null, null, Arrays.asList(filters))
+        );
+        return this;
     }
 
     @Override
-    public Filter or(Filter<T>... filters) {
-        return null;
+    public Filter<T> or(Filter<?>... filters) {
+        this.conditions.add(
+                new Condition(Condition.Op.and, null, null, Arrays.asList(filters))
+        );
+        return this;
     }
 
     /**
@@ -203,5 +206,87 @@ public class SimpleFilter<T> implements Filter<T> {
             }
         }
         return false;
+    }
+
+    @Override
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        List<Predicate> predicates = new ArrayList<>();
+        for (Condition condition : this.conditions) {
+            switch (condition.getOp()) {
+                case like -> {
+                    predicates.add(
+                            criteriaBuilder.like(root.get(condition.getField()), "%" + condition.getValue() + "%")
+                    );
+                }
+                case eq -> {
+                    predicates.add(
+                            criteriaBuilder.equal(root.get(condition.getField()), condition.getValue())
+                    );
+                }
+                case ne -> {
+                    predicates.add(
+                            criteriaBuilder.notEqual(root.get(condition.getField()), condition.getValue())
+                    );
+                }
+                case gt -> {
+                    predicates.add(
+                            criteriaBuilder.greaterThan(root.get(condition.getField()), condition.getValue())
+                    );
+                }
+                case lt -> {
+                    predicates.add(
+                            criteriaBuilder.lessThan(root.get(condition.getField()), condition.getValue())
+                    );
+                }
+                case gte -> {
+                    predicates.add(
+                            criteriaBuilder.greaterThanOrEqualTo(root.get(condition.getField()), condition.getValue())
+                    );
+                }
+                case lte -> {
+                    predicates.add(
+                            criteriaBuilder.lessThanOrEqualTo(root.get(condition.getField()), condition.getValue())
+                    );
+                }
+                case isNull -> {
+                    predicates.add(
+                            criteriaBuilder.isNull(root.get(condition.getField()))
+                    );
+                }
+                case _in -> {
+                    predicates.add(
+                            root.get(condition.getField()).in(criteriaBuilder.literal(condition.getValue()))
+                    );
+                }
+                case notIn -> {
+                    predicates.add(
+                            criteriaBuilder.not(root.get(condition.getField()).in(criteriaBuilder.literal(condition.getValue())))
+                    );
+                }
+                case or -> {
+                    List<Predicate> list = new ArrayList<>();
+                    List<Filter> filters = condition.getFilters();
+                    for (Filter filter : filters) {
+                        Predicate predicate = filter.toPredicate(root, query, criteriaBuilder);
+                        list.add(predicate);
+                    }
+                    predicates.add(criteriaBuilder.or(list.toArray(new Predicate[list.size()])));
+                }
+
+                case and -> {
+                    List<Predicate> list = new ArrayList<>();
+                    List<Filter> filters = condition.getFilters();
+                    for (Filter filter : filters) {
+                        Predicate predicate = filter.toPredicate(root, query, criteriaBuilder);
+                        list.add(predicate);
+                    }
+                    predicates.add(criteriaBuilder.and(list.toArray(new Predicate[list.size()])));
+                }
+                default ->
+                        throw new IllegalArgumentException("Unknown jpa filter condition type: " + condition.getOp());
+            }
+        }
+        return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+
     }
 }

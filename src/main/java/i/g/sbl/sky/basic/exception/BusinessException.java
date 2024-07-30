@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
     private int code;
 
 

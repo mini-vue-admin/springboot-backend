@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 public enum Gender implements EnumBase<String> {
     female("F"), male("M"), unknown("U");
 
-    private String code;
+    private final String code;
 
     Gender(String code) {
         this.code = code;

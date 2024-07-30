@@ -8,7 +8,7 @@ public enum Status implements EnumBase<Integer> {
 
     enabled(1), disabled(0);
 
-    private int code;
+    private final int code;
 
     Status(int code) {
         this.code = code;

@@ -6,7 +6,6 @@ import i.g.sbl.sky.entity.system.Config;
 import i.g.sbl.sky.repo.system.ConfigRepo;
 import i.g.sbl.sky.service.system.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,7 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public PageData<Config> findAll(Config query, Pageable pageable) {
+    public PageData<Config> findAll(Config query, PageData<Config> pageable) {
         return configRepo.findByFilter(query, pageable);
     }
 
