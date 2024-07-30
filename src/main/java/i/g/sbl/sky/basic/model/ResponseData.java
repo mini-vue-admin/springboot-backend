@@ -35,6 +35,11 @@ public class ResponseData<T> {
         return new ResponseData<>(ResponseCode.FAILURE, msg, null);
     }
 
+
+    public static <T> ResponseData<T> failure(String msg, T data) {
+        return new ResponseData<>(ResponseCode.FAILURE, msg, data);
+    }
+
     public static ResponseData<Void> failure(Exception e) {
         if (e instanceof BusinessException) {
             return new ResponseData<>(((BusinessException) e).getCode(), e.getMessage(), null);
