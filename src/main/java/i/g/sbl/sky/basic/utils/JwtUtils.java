@@ -7,12 +7,11 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -35,11 +34,11 @@ public class JwtUtils {
     @PostConstruct
     public void init() {
         try {
-            File privateFile = ResourceUtils.getFile("classpath:auth.private.key");
-            String privateKeyStr = Files.readString(privateFile.toPath()).replaceAll("[\\n\\r]", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
+            ClassPathResource privateKeyResource = new ClassPathResource("auth.private.key");
+            String privateKeyStr = privateKeyResource.getContentAsString(StandardCharsets.UTF_8).replaceAll("[\\n\\r]", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
 
-            File publicFile = ResourceUtils.getFile("classpath:auth.public.key");
-            String publicKeyStr = Files.readString(publicFile.toPath()).replaceAll("[\\n\\r]", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
+            ClassPathResource publicKeyResource = new ClassPathResource("auth.public.key");
+            String publicKeyStr = publicKeyResource.getContentAsString(StandardCharsets.UTF_8).replaceAll("[\\n\\r]", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
 
             privateKey = getPrivateKey(privateKeyStr);
             publicKey = getPublicKey(publicKeyStr);
