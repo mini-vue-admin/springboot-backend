@@ -18,17 +18,14 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Slf4j
 @Data
 public class CodeGenerator {
     public static final String[] templates = new String[]{"controller.ftl", "service.ftl", "serviceImpl.ftl", "repo.ftl", "entity.ftl"};
-
+    public static final String[] base_entity_columns = new String[]{"id", "create_time", "create_by", "update_time", "update_by"};
     @JsonIgnore
     private DataSource dataSource;
     private String basePackage = "i.g.sbl.sky";
@@ -50,7 +47,6 @@ public class CodeGenerator {
         cfg.setDirectoryForTemplateLoading(ResourceUtils.getFile("classpath:templates/code-gen/java"));
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
     }
 
     /**
@@ -68,6 +64,8 @@ public class CodeGenerator {
             ResultSet tablesResultSet = metaData.getTables(connection.getCatalog(), null, "%", new String[]{"TABLE"});
             while (tablesResultSet.next()) {
                 HashMap<String, Object> root = new HashMap<>();
+                root.put("ENTITY_PACKAGE_IMPORTS", new ArrayList<>());
+
                 String tableName = tablesResultSet.getString("TABLE_NAME").toLowerCase();
                 if (!Pattern.compile(this.tableNameRegex).matcher(tableName).matches()) {
                     continue;
@@ -77,7 +75,10 @@ public class CodeGenerator {
                 String shortTableName = removeTableNamePrefix && tableName.indexOf("_") > 0 ? tableName.substring(tableName.indexOf("_") + 1) : tableName;
                 root.put("ENTITY_NAME", StringUtils.capitalize(CaseUtils.toCamelCase(shortTableName)));
                 root.put("ENTITY_FIELD_NAME", CaseUtils.toCamelCase(shortTableName));
-                root.put("TABLE_COMMENT", getTableComment(connection, tableName));
+
+                String tableComment = getTableComment(connection, tableName);
+                tableComment = StringUtils.hasText(tableComment) ? tableComment : tableName;
+                root.put("TABLE_COMMENT", tableComment);
 
                 ResultSet rs = metaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
 
@@ -91,13 +92,26 @@ public class CodeGenerator {
                 root.put("FIELDS", fields);
 
                 Map<String, String> fieldComments = getFieldComments(connection, tableName);
+                root.put("EXTENDS_BASE_ENTITY", fieldComments.containsKey("id") && fieldComments.containsKey("create_time"));
+
                 ResultSet columnsResultSet = metaData.getColumns(connection.getCatalog(), null, tableName, "%");
                 while (columnsResultSet.next()) {
                     String columnName = columnsResultSet.getString("COLUMN_NAME").toLowerCase();
+                    if ((Boolean) root.get("EXTENDS_BASE_ENTITY")) {
+                        if (Arrays.stream(base_entity_columns).anyMatch(it -> it.equals(columnName))) {
+                            continue;
+                        }
+                    }
+
                     String columnType = columnsResultSet.getString("TYPE_NAME");
+                    String fieldType = toFieldType(columnType);
+                    if (fieldType.equals("LocalDateTime")) {
+                        List<String> pkgs = (List<String>) root.get("ENTITY_PACKAGE_IMPORTS");
+                        pkgs.add("java.time.LocalDateTime");
+                    }
                     fields.add(Map.of(
                             "FIELD_NAME", CaseUtils.toCamelCase(columnName),
-                            "FIELD_TYPE", toFieldType(columnType),
+                            "FIELD_TYPE", fieldType,
                             "PRIMARY_KEY", primaryKey.contains(columnName),
                             "FIELD_COMMENT", fieldComments.get(columnName)
                     ));
@@ -108,7 +122,6 @@ public class CodeGenerator {
         }
         return list;
     }
-
 
 
     @SneakyThrows
