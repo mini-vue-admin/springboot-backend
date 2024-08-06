@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "system/config", description = "系统配置")
+@Tag(name = "system/config", description = "参数配置表")
 @RequestMapping("system/config")
 public class ConfigController {
 

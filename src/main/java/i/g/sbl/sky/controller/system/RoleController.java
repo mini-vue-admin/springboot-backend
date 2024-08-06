@@ -2,8 +2,8 @@ package i.g.sbl.sky.controller.system;
 
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
-import i.g.sbl.sky.entity.system.User;
-import i.g.sbl.sky.service.system.UserService;
+import i.g.sbl.sky.entity.system.Role;
+import i.g.sbl.sky.service.system.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,66 +13,66 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "system/user", description = "用户表")
-@RequestMapping("system/user")
-public class UserController {
+@Tag(name = "system/role", description = "角色表")
+@RequestMapping("system/role")
+public class RoleController {
 
     @Autowired
-    private UserService userService;
+    private RoleService roleService;
 
     @Operation(summary = "列表查询")
     @GetMapping
-    public ResponseData<List<User>> getList() {
-        User user = new User();
+    public ResponseData<List<Role>> getList() {
+        Role role = new Role();
 
-        List<User> list = userService.findAll(user);
+        List<Role> list = roleService.findAll(role);
         return ResponseData.success(list);
     }
 
     @Operation(summary = "分页查询")
     @GetMapping("page")
-    public ResponseData<PageData<User>> getPage(
+    public ResponseData<PageData<Role>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
     ) {
-        User user = new User();
+        Role role = new Role();
 
-        PageData<User> page = userService.findAll(user, PageData.of(pageIndex, pageSize));
+        PageData<Role> page = roleService.findAll(role, PageData.of(pageIndex, pageSize));
         return ResponseData.success(page);
     }
 
     @Operation(summary = "根据ID获取")
     @GetMapping("{id:\\d+}")
-    public ResponseData<User> getById(@PathVariable("id") Long id) {
-        Optional<User> user = userService.findById(id);
-        return ResponseData.success(user);
+    public ResponseData<Role> getById(@PathVariable("id") Long id) {
+        Optional<Role> role = roleService.findById(id);
+        return ResponseData.success(role);
     }
 
     @Operation(summary = "创建")
     @PostMapping
-    public ResponseData<User> create(@RequestBody User user) {
-        User created = userService.create(user);
+    public ResponseData<Role> create(@RequestBody Role role) {
+        Role created = roleService.create(role);
         return ResponseData.success(created);
     }
 
     @Operation(summary = "更新")
     @PutMapping
-    public ResponseData<User> update(@RequestBody User user) {
-        User updated = userService.update(user);
+    public ResponseData<Role> update(@RequestBody Role role) {
+        Role updated = roleService.update(role);
         return ResponseData.success(updated);
     }
 
     @Operation(summary = "删除")
     @DeleteMapping("{id:\\d+}")
     public ResponseData<Void> delete(@PathVariable("id") Long id) {
-        userService.delete(id);
+        roleService.delete(id);
         return ResponseData.success();
     }
 
     @Operation(summary = "批量删除")
     @DeleteMapping()
     public ResponseData<Void> delete(@RequestParam(name = "id") List<Long> id) {
-        userService.delete(id);
+        roleService.delete(id);
         return ResponseData.success();
     }
 }
