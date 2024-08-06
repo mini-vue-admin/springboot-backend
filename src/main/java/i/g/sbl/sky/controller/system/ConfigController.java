@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "system/config")
+@Tag(name = "system/config", description = "系统配置")
 @RequestMapping("system/config")
 public class ConfigController {
 
@@ -65,15 +65,15 @@ public class ConfigController {
     @Operation(summary = "创建")
     @PostMapping
     public ResponseData<Config> create(@RequestBody Config config) {
-        configService.create(config);
-        return ResponseData.success(config);
+        Config created = configService.create(config);
+        return ResponseData.success(created);
     }
 
     @Operation(summary = "更新")
     @PutMapping
     public ResponseData<Config> update(@RequestBody Config config) {
-        Config update = configService.update(config);
-        return ResponseData.success(update);
+        Config updated = configService.update(config);
+        return ResponseData.success(updated);
     }
 
     @Operation(summary = "删除")

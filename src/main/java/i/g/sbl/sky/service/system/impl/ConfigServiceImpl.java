@@ -44,8 +44,7 @@ public class ConfigServiceImpl implements ConfigService {
     public Config update(Config config) {
         Config item = configRepo.findById(config.getId()).orElseThrow(NotFoundException::new);
         item.copyNonNulls(config);
-        configRepo.save(item);
-        return item;
+        return configRepo.save(item);
     }
 
     @Transactional
