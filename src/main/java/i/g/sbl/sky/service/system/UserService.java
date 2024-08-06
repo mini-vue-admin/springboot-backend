@@ -1,31 +1,31 @@
 package i.g.sbl.sky.service.system;
 
-import i.g.sbl.sky.basic.exception.AuthenticationException;
 import i.g.sbl.sky.basic.model.DetailedUser;
+import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.User;
-import i.g.sbl.sky.repo.system.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-public class UserService {
-    @Autowired
-    private UserRepo userRepo;
+import java.util.List;
+import java.util.Optional;
 
-    public User getByUsername(String username) {
-        return userRepo.findByUsername(username);
-    }
+public interface UserService {
 
-    public DetailedUser getDetailedUserByUsername(String username) {
-        DetailedUser detailedUser = new DetailedUser(getByUsername(username));
+    Optional<User> findById(Long id);
 
-        return detailedUser;
-    }
+    Optional<User> getByUsername(String username);
 
-    public void validate(String username, String password) {
-        User user = userRepo.findByUsernameAndPassword(username, password);
-        if (user == null) {
-            throw new AuthenticationException("Invalid username or password");
-        }
-    }
+    Optional<DetailedUser> getDetailedUserByUsername(String username);
+
+    List<User> findAll(User query);
+
+    PageData<User> findAll(User query, PageData<User> pageable);
+
+    User create(User user);
+
+    User update(User user);
+
+    void delete(Long id);
+
+    void delete(List<Long> id);
+
+    void validate(String username, String password);
 }

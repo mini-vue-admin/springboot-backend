@@ -14,6 +14,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Component
 @Order(2)
@@ -41,24 +44,27 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             }
         }
 
-        try {
-            String authorization = request.getHeader("Authorization");
-            if (!StringUtils.hasText(authorization)) {
-                throw new AuthenticationException("Authorization header is required");
-            }
-            String token = authorization.substring("Bearer ".length());
+        String authorization = request.getHeader("Authorization");
+        if (!StringUtils.hasText(authorization)) {
+            throw new AuthenticationException("Authorization header is required");
+        }
+        String token = authorization.substring("Bearer ".length());
 
-            String username = jwtUtils.decode(token);
-            DetailedUser user = userService.getDetailedUserByUsername(username);
-            if (user.getStatus() == Status.disabled) {
+        String username = jwtUtils.decode(token);
+        Optional<DetailedUser> user = userService.getDetailedUserByUsername(username);
+        user.ifPresentOrElse(u -> {
+            if (u.getStatus() == Status.disabled) {
                 throw new AuthenticationException("User disabled");
             }
-            UserContext.setUser(user);
-
-            return true;
-        } finally {
-            UserContext.clear();
-        }
+            UserContext.setUser(u);
+        }, () -> {
+            throw new AuthenticationException("User not found");
+        });
+        return true;
     }
 
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        UserContext.clear();
+    }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @Tag(name = "Authentication")
 @RestController
 public class LoginController {
@@ -24,7 +26,7 @@ public class LoginController {
     @PostMapping("login")
     public ResponseData<DetailedUser> login(@RequestBody LoginRequest loginRequest) {
         userService.validate(loginRequest.getUsername(), loginRequest.getPassword());
-        DetailedUser user = userService.getDetailedUserByUsername(loginRequest.getUsername());
+        Optional<DetailedUser> user = userService.getDetailedUserByUsername(loginRequest.getUsername());
         return ResponseData.success(user);
     }
 }
