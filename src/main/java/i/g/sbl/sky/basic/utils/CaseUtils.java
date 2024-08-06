@@ -1,7 +1,13 @@
 package i.g.sbl.sky.basic.utils;
 
 public class CaseUtils {
-
+    /**
+     * 将字符串转换为蛇形命名法（snake_case）。
+     * 例如："FirstName" 转换为 "first_name"。
+     *
+     * @param name 需要转换的字符串。
+     * @return 转换后的蛇形命名法字符串。
+     */
     public static String toSnakeCase(String name) {
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < name.length(); ++i) {
@@ -19,7 +25,13 @@ public class CaseUtils {
         return buf.toString();
     }
 
-
+    /**
+     * 将字符串转换为驼峰命名法（camelCase）。
+     * 例如："first_name" 转换为 "firstName"。
+     *
+     * @param name 需要转换的字符串。
+     * @return 转换后的驼峰命名法字符串。
+     */
     public static String toCamelCase(String name) {
         StringBuilder buf = new StringBuilder();
         boolean capitalize = false;
@@ -38,4 +50,5 @@ public class CaseUtils {
         }
         return buf.toString();
     }
+
 }

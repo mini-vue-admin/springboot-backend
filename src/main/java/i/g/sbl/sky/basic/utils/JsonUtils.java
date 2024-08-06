@@ -34,6 +34,14 @@ public class JsonUtils {
     }
 
     @SneakyThrows
+    public static String toPrettyJson(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+    }
+
+    @SneakyThrows
     public static <T> T fromJson(String json, Class<T> clz) {
         if (json == null || json.isEmpty()) {
             return null;

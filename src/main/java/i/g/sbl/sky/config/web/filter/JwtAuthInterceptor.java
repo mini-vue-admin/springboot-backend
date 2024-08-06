@@ -1,6 +1,6 @@
 package i.g.sbl.sky.config.web.filter;
 
-import i.g.sbl.sky.basic.cons.Status;
+import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.basic.exception.AuthenticationException;
 import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.UserContext;

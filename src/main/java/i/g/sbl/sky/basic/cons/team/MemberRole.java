@@ -1,4 +1,4 @@
-package i.g.sbl.sky.basic.cons;
+package i.g.sbl.sky.basic.cons.team;
 
 import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;

@@ -1,6 +1,6 @@
 package i.g.sbl.sky.entity.team;
 
-import i.g.sbl.sky.basic.cons.MemberRole;
+import i.g.sbl.sky.basic.cons.team.MemberRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

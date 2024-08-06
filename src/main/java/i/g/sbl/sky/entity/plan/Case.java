@@ -1,6 +1,6 @@
 package i.g.sbl.sky.entity.plan;
 
-import i.g.sbl.sky.basic.cons.PlanStatus;
+import i.g.sbl.sky.basic.cons.plan.PlanStatus;
 import i.g.sbl.sky.config.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

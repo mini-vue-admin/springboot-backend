@@ -1,16 +1,15 @@
-package i.g.sbl.sky.basic.cons;
+package i.g.sbl.sky.basic.cons.system;
 
 import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
-public enum ConfigType implements EnumBase<String> {
-
-    system("0"), custom("1");
+public enum Gender implements EnumBase<String> {
+    female("F"), male("M"), unknown("U");
 
     private final String code;
 
-    ConfigType(String code) {
+    Gender(String code) {
         this.code = code;
     }
 
@@ -20,10 +19,10 @@ public enum ConfigType implements EnumBase<String> {
     }
 
     @Converter(autoApply = true)
-    public static class ConfigTypeConverter extends EnumConverter<ConfigType, String> {
+    public static class GenderConverter extends EnumConverter<Gender, String> {
 
-        public ConfigTypeConverter() {
-            super(ConfigType.class);
+        public GenderConverter() {
+            super(Gender.class);
         }
     }
 }

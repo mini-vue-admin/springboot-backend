@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
 
-@Tag(name = "Common")
+@Tag(name = "Common", description = "公共接口")
 @RestController
-public class IndexController {
+public class CommonController {
     @Autowired
     private DataSource dataSource;
 
     @Operation(summary = "genCode")
     @PostMapping("genCode")
-    public void genCode(@RequestBody CodeGenerator request) {
-        CodeGenerator generator = new CodeGenerator();
+    public void genCode(@RequestBody CodeGenerator generator) {
         generator.setDataSource(dataSource);
         generator.generate();
     }

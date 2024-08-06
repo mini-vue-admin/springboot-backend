@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface ConfigRepo extends CrudRepository<Config, Long>, JpaSpecificationExecutor<Config> {
 
-
     default List<Config> findByFilter(Config query) {
         return this.findAll(
                 Filter.of(query)

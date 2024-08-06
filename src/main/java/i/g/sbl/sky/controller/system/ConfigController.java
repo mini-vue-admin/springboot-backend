@@ -1,6 +1,6 @@
 package i.g.sbl.sky.controller.system;
 
-import i.g.sbl.sky.basic.cons.ConfigType;
+import i.g.sbl.sky.basic.cons.system.ConfigType;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.Config;
