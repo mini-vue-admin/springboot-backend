@@ -8,7 +8,6 @@ import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
-
 <#list ENTITY_PACKAGE_IMPORTS as pkg>
 import pkg;
 </#list>
@@ -21,8 +20,8 @@ import pkg;
 @Table(name = "${TABLE_NAME}")
 public class ${ENTITY_NAME}<#if EXTENDS_BASE_ENTITY> extends BaseEntity</#if> {
     <#list FIELDS as f>
-        <#if f.PRIMARY_KEY>@Id</#if>
-        private ${f.FIELD_TYPE} ${f.FIELD_NAME};
+    <#if f.PRIMARY_KEY>@Id</#if>
+    private ${f.FIELD_TYPE} ${f.FIELD_NAME};
     </#list>
 
     public void copyNonNulls(${ENTITY_NAME} ${ENTITY_FIELD_NAME}) {
