@@ -1,7 +1,6 @@
 package i.g.sbl.sky.entity.system;
 
 import i.g.sbl.sky.config.jpa.BaseEntity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -16,11 +15,20 @@ import org.mapstruct.factory.Mappers;
 @Entity
 @Table(name = "sys_role")
 public class Role extends BaseEntity {
-    
+
+    /**
+     * 角色名称
+     */
     private String roleName;
-    
+
+    /**
+     * 角色
+     */
     private String roleKey;
-    
+
+    /**
+     * 备注
+     */
     private String remark;
 
     public void copyNonNulls(Role role) {

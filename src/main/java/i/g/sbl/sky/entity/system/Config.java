@@ -10,21 +10,36 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 /**
- * 参数配置表
- */
+* 参数配置表
+*/
 @Data
 @Entity
 @Table(name = "sys_config")
 public class Config extends BaseEntity {
 
+    /**
+     * 参数名称
+     */
     private String configName;
 
+    /**
+     * 备注
+     */
     private String remark;
 
+    /**
+     * 参数键名
+     */
     private String configKey;
 
+    /**
+     * 参数键值
+     */
     private String configValue;
 
+    /**
+     * 参数类型(0系统内置 1用户定义)
+     */
     private ConfigType configType;
 
     public void copyNonNulls(Config config) {

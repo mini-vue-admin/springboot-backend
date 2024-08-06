@@ -1,7 +1,6 @@
 package i.g.sbl.sky.entity.system;
 
 import i.g.sbl.sky.config.jpa.BaseEntity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -16,11 +15,20 @@ import org.mapstruct.factory.Mappers;
 @Entity
 @Table(name = "sys_dict_type")
 public class DictType extends BaseEntity {
-    
+
+    /**
+     * 字典名称
+     */
     private String dictName;
-    
+
+    /**
+     * 字典类型
+     */
     private String dictType;
-    
+
+    /**
+     * 备注
+     */
     private String remark;
 
     public void copyNonNulls(DictType dictType) {
