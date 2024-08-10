@@ -9,8 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface RoleUserRepo extends CrudRepository<RoleUser, Long>, JpaSpecificationExecutor<RoleUser> {
-    
+public interface RoleUserRepo extends CrudRepository<RoleUser, RoleUser.RoleUserId>, JpaSpecificationExecutor<RoleUser> {
+
     default List<RoleUser> findByFilter(RoleUser query) {
         return this.findAll(
                 Filter.of(query)
