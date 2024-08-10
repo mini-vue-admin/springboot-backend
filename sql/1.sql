@@ -157,3 +157,29 @@ create table sys_config
     primary key (id)
 ) engine = innodb
   auto_increment = 100 comment = '参数配置表';
+
+
+-- ----------------------------
+-- 审计日志表
+-- ----------------------------
+drop table if exists sys_log;
+create table sys_log
+(
+    id           bigint(20) not null auto_increment comment 'ID',
+    create_by    varchar(64)  default '' comment '创建者',
+    create_time  datetime comment '创建时间',
+    update_by    varchar(64)  default '' comment '更新者',
+    update_time  datetime comment '更新时间',
+    msg  varchar(255) default '' comment '操作描述',
+    level char(1) default '1' comment '危险级别(1普通 2警告 2危险)',
+    type char(1) default '1' comment '操作类型(1认证操作 2系统操作)',
+    username    varchar(30)  comment '用户账号',
+    nickname    varchar(30)  comment '用户昵称',
+    result_status char(1) comment '操作结果状态(0失败 1成功)',
+    failed_reason varchar(1024) comment '失败原因',
+    request_uri varchar(1024) comment '请求路径',
+    parameters varchar(1024) comment '操作参数',
+    result varchar(1024) comment '操作结果',
+    primary key (id)
+) engine = innodb
+  auto_increment = 100 comment = '系统审计日志表';

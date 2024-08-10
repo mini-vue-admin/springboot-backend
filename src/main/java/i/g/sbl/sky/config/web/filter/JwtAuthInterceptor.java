@@ -5,6 +5,7 @@ import i.g.sbl.sky.basic.exception.AuthenticationException;
 import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.UserContext;
 import i.g.sbl.sky.basic.utils.JwtUtils;
+import i.g.sbl.sky.entity.system.User;
 import i.g.sbl.sky.service.system.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,11 +36,13 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!authEnabled) {
+            UserContext.setUser(DetailedUser.ANONYMOUSE);
             return true;
         }
         String requestURI = request.getRequestURI();
         for (String path : WHITE_LIST) {
             if (requestURI.startsWith(path)) {
+                UserContext.setUser(DetailedUser.ANONYMOUSE);
                 return true;
             }
         }

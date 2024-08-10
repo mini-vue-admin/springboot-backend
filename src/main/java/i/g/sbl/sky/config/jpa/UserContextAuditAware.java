@@ -12,6 +12,6 @@ public class UserContextAuditAware implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.ofNullable(UserContext.getUser()).map(User::getUsername);
+        return UserContext.getUser().map(User::getUsername);
     }
 }
