@@ -2,7 +2,6 @@ package i.g.sbl.sky.basic.model;
 
 import i.g.sbl.sky.basic.cons.system.Gender;
 import i.g.sbl.sky.basic.cons.system.Status;
-import i.g.sbl.sky.entity.system.Role;
 import i.g.sbl.sky.entity.system.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +15,7 @@ import java.util.List;
 @Getter
 public class DetailedUser extends User {
     public static final DetailedUser ANONYMOUSE = new DetailedUser();
+
     static {
         ANONYMOUSE.setUsername("anonymouse");
         ANONYMOUSE.setNickname("anonymouse");
@@ -23,10 +23,10 @@ public class DetailedUser extends User {
         ANONYMOUSE.setGender(Gender.unknown);
     }
 
-    private List<Role> role;
+    private List<String> roles;
 
     public DetailedUser() {
-        this.role = new ArrayList<Role>();
+        this.roles = new ArrayList<String>();
     }
 
     public DetailedUser(User user) {
