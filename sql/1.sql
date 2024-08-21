@@ -18,7 +18,7 @@ create table sys_user
     gender      char(1)      default 'U' comment '用户性别(男:M, 女:F, 未知:U)',
     avatar      varchar(100) default '' comment '用户头像',
     password    varchar(100) default '' comment '密码',
-    status      tinyint(1)   default 1 comment '帐号状态(停用:0, 正常:1)',
+    status      char(1)   default 1 comment '帐号状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 100 comment = '用户表';
@@ -81,7 +81,7 @@ create table sys_menu
     component   varchar(255) comment '组件路径',
     query       varchar(255) comment '路由参数',
     icon        varchar(100) default '#' comment '菜单图标',
-    status      tinyint(1)      default 1 comment '菜单状态(停用:0, 正常:1)',
+    status      char(1)      default 1 comment '菜单状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 1000 comment = '菜单表';
@@ -132,8 +132,8 @@ create table sys_dict_data
     dict_value  varchar(100) default '' comment '字典键值',
     order_num   int(4)       default 0 comment '字典排序',
     css_class   varchar(100) comment '样式属性',
-    as_default  tinyint(1)   default 0 comment '是否默认(否:0, 是:1)',
-    status      tinyint(1)      default 1 comment '状态(停用:0, 正常:1)',
+    as_default  char(1)   default 0 comment '是否默认(否:0, 是:1)',
+    status      char(1)      default 1 comment '状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 1000 comment = '字典数据表';
