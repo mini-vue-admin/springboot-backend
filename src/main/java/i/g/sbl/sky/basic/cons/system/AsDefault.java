@@ -4,21 +4,21 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
-public enum Status implements EnumBase<String> {
+public enum AsDefault implements EnumBase<String> {
 
     /**
-     * 停用
+     * 否
      */
-    disabled("0"),
+    no("0"), 
     /**
-     * 正常
+     * 是
      */
-    enabled("1")
+    yes("1")
     ;
 
     private final String code;
 
-    Status(String code) {
+    AsDefault(String code) {
         this.code = code;
     }
 
@@ -28,10 +28,10 @@ public enum Status implements EnumBase<String> {
     }
 
     @Converter(autoApply = true)
-    public static class StatusConverter extends EnumConverter<Status, String> {
+    public static class AsDefaultConverter extends EnumConverter<AsDefault, String> {
 
-        public StatusConverter() {
-            super(Status.class);
+        public AsDefaultConverter() {
+            super(AsDefault.class);
         }
     }
 }

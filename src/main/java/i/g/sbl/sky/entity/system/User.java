@@ -1,7 +1,5 @@
 package i.g.sbl.sky.entity.system;
 
-import i.g.sbl.sky.basic.cons.system.Gender;
-import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.config.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -9,6 +7,8 @@ import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import i.g.sbl.sky.basic.cons.system.Gender;
+import i.g.sbl.sky.basic.cons.system.Status;
 
 /**
 * 用户表
@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private String phone;
 
     /**
-     * 用户性别(M男 F女 U未知)
+     * 用户性别(男:M, 女:F, 未知:U)
      */
     private Gender gender;
 
@@ -54,7 +54,7 @@ public class User extends BaseEntity {
     private String password;
 
     /**
-     * 帐号状态(1正常 0停用)
+     * 帐号状态(停用:0, 正常:1)
      */
     private Status status;
 

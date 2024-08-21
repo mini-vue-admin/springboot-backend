@@ -4,21 +4,25 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
-public enum Status implements EnumBase<String> {
+public enum Level implements EnumBase<String> {
 
-    /**
-     * 停用
-     */
-    disabled("0"),
     /**
      * 正常
      */
-    enabled("1")
+    normal("1"),
+    /**
+     * 警告
+     */
+    warn("2"), 
+    /**
+     * 危险
+     */
+    danger("3")
     ;
 
     private final String code;
 
-    Status(String code) {
+    Level(String code) {
         this.code = code;
     }
 
@@ -28,10 +32,10 @@ public enum Status implements EnumBase<String> {
     }
 
     @Converter(autoApply = true)
-    public static class StatusConverter extends EnumConverter<Status, String> {
+    public static class LevelConverter extends EnumConverter<Level, String> {
 
-        public StatusConverter() {
-            super(Status.class);
+        public LevelConverter() {
+            super(Level.class);
         }
     }
 }

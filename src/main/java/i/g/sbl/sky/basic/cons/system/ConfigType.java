@@ -6,7 +6,15 @@ import jakarta.persistence.Converter;
 
 public enum ConfigType implements EnumBase<String> {
 
-    system("0"), custom("1");
+    /**
+     * 系统内置
+     */
+    system("0"),
+    /**
+     * 用户定义
+     */
+    custom("1")
+    ;
 
     private final String code;
 

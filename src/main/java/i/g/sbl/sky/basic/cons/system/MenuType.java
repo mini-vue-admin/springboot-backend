@@ -4,21 +4,25 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
-public enum Status implements EnumBase<String> {
+public enum MenuType implements EnumBase<String> {
 
     /**
-     * 停用
+     * 目录
      */
-    disabled("0"),
+    dir("M"),
     /**
-     * 正常
+     * 菜单
      */
-    enabled("1")
+    menu("C"), 
+    /**
+     * 按钮
+     */
+    button("F")
     ;
 
     private final String code;
 
-    Status(String code) {
+    MenuType(String code) {
         this.code = code;
     }
 
@@ -28,10 +32,10 @@ public enum Status implements EnumBase<String> {
     }
 
     @Converter(autoApply = true)
-    public static class StatusConverter extends EnumConverter<Status, String> {
+    public static class MenuTypeConverter extends EnumConverter<MenuType, String> {
 
-        public StatusConverter() {
-            super(Status.class);
+        public MenuTypeConverter() {
+            super(MenuType.class);
         }
     }
 }

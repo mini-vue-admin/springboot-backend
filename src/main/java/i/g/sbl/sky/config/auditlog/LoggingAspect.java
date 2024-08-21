@@ -1,6 +1,6 @@
 package i.g.sbl.sky.config.auditlog;
 
-import i.g.sbl.sky.basic.cons.system.LogResultStatus;
+import i.g.sbl.sky.basic.cons.system.ResultStatus;
 import i.g.sbl.sky.basic.exception.AuthenticationException;
 import i.g.sbl.sky.basic.model.UserContext;
 import i.g.sbl.sky.basic.utils.SpelUtils;
@@ -62,14 +62,14 @@ public class LoggingAspect {
         }
         try {
             Object result = joinPoint.proceed();
-            log.setResultStatus(LogResultStatus.success);
+            log.setResultStatus(ResultStatus.success);
             if (StringUtils.hasText(logAnnotation.result())) {
                 String resultText = SpelUtils.parseSPEL(logAnnotation.result(), result);
                 log.setResult(StringUtils.truncate(resultText, 1024));
             }
             return result;
         } catch (Exception e) {
-            log.setResultStatus(LogResultStatus.failed);
+            log.setResultStatus(ResultStatus.fail);
             log.setFailedReason(StringUtils.truncate(e.getMessage(), 1024));
             throw e;
         } finally {

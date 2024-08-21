@@ -5,7 +5,20 @@ import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
 public enum Gender implements EnumBase<String> {
-    female("F"), male("M"), unknown("U");
+
+    /**
+     * 男
+     */
+    male("M"), 
+    /**
+     * 女
+     */
+    female("F"), 
+    /**
+     * 未知
+     */
+    unknown("U")
+    ;
 
     private final String code;
 

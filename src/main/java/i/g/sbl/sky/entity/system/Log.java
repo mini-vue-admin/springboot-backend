@@ -1,8 +1,5 @@
 package i.g.sbl.sky.entity.system;
 
-import i.g.sbl.sky.basic.cons.system.LogLevel;
-import i.g.sbl.sky.basic.cons.system.LogResultStatus;
-import i.g.sbl.sky.basic.cons.system.LogType;
 import i.g.sbl.sky.config.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -10,10 +7,13 @@ import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import i.g.sbl.sky.basic.cons.system.Level;
+import i.g.sbl.sky.basic.cons.system.Type;
+import i.g.sbl.sky.basic.cons.system.ResultStatus;
 
 /**
- * 系统审计日志表
- */
+* 系统审计日志表
+*/
 @Data
 @Entity
 @Table(name = "sys_log")
@@ -25,14 +25,14 @@ public class Log extends BaseEntity {
     private String msg;
 
     /**
-     * 危险级别(1普通 2警告 2危险)
+     * 危险级别(普通:1, 警告:2, 危险:3)
      */
-    private LogLevel level;
+    private Level level;
 
     /**
-     * 操作类型(1认证操作 2系统操作)
+     * 操作类型(认证操作:1, 系统操作:2)
      */
-    private LogType type;
+    private Type type;
 
     /**
      * 用户账号
@@ -45,9 +45,9 @@ public class Log extends BaseEntity {
     private String nickname;
 
     /**
-     * 操作结果状态(0失败 1成功)
+     * 操作结果状态(失败:0, 成功:1)
      */
-    private LogResultStatus resultStatus;
+    private ResultStatus resultStatus;
 
     /**
      * 失败原因

@@ -1,6 +1,5 @@
 package i.g.sbl.sky.entity.system;
 
-import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.config.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -8,6 +7,8 @@ import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import i.g.sbl.sky.basic.cons.system.AsDefault;
+import i.g.sbl.sky.basic.cons.system.Status;
 
 /**
 * 字典数据表
@@ -43,12 +44,12 @@ public class DictData extends BaseEntity {
     private String cssClass;
 
     /**
-     * 是否默认(0否 1是)
+     * 是否默认(否:0, 是:1)
      */
-    private Boolean asDefault;
+    private AsDefault asDefault;
 
     /**
-     * 状态(1正常 0停用)
+     * 状态(停用:0, 正常:1)
      */
     private Status status;
 

@@ -171,7 +171,7 @@ create table sys_log
     update_by    varchar(64)  default '' comment '更新者',
     update_time  datetime comment '更新时间',
     msg  varchar(255) default '' comment '操作描述',
-    level char(1) default '1' comment '危险级别(普通:1, 警告:2, 危险:3)',
+    level char(1) default '1' comment '危险级别(正常:1, 警告:2, 危险:3)',
     type char(1) default '1' comment '操作类型(认证操作:1, 系统操作:2)',
     username    varchar(30)  comment '用户账号',
     nickname    varchar(30)  comment '用户昵称',

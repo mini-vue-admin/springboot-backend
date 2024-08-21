@@ -1,6 +1,5 @@
 package i.g.sbl.sky.entity.system;
 
-import i.g.sbl.sky.basic.cons.system.ConfigType;
 import i.g.sbl.sky.config.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -8,6 +7,7 @@ import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import i.g.sbl.sky.basic.cons.system.ConfigType;
 
 /**
 * 参数配置表
@@ -38,7 +38,7 @@ public class Config extends BaseEntity {
     private String configValue;
 
     /**
-     * 参数类型(0系统内置 1用户定义)
+     * 参数类型(系统内置:0, 用户定义:1)
      */
     private ConfigType configType;
 

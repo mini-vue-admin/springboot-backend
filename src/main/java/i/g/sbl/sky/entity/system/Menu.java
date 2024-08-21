@@ -1,6 +1,5 @@
 package i.g.sbl.sky.entity.system;
 
-import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.config.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -8,6 +7,8 @@ import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import i.g.sbl.sky.basic.cons.system.Status;
+import i.g.sbl.sky.basic.cons.system.MenuType;
 
 /**
 * 菜单表
@@ -33,9 +34,9 @@ public class Menu extends BaseEntity {
     private String menuName;
 
     /**
-     * 菜单类型(M目录 C菜单 F按钮)
+     * 菜单类型(目录:M, 菜单:C, 按钮:F)
      */
-    private String menuType;
+    private MenuType menuType;
 
     /**
      * 显示排序
@@ -63,7 +64,7 @@ public class Menu extends BaseEntity {
     private String icon;
 
     /**
-     * 菜单状态(1正常 0停用)
+     * 菜单状态(停用:0, 正常:1)
      */
     private Status status;
 

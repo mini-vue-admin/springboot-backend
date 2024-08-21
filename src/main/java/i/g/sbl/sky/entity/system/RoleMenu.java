@@ -1,8 +1,8 @@
 package i.g.sbl.sky.entity.system;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import org.mapstruct.MappingTarget;
@@ -10,8 +10,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 /**
- * 角色菜单表
- */
+* 角色菜单表
+*/
 @Data
 @Entity
 @Table(name = "sys_role_menu")
@@ -43,7 +43,15 @@ public class RoleMenu {
 
     @Data
     public static class RoleMenuId {
+
+        /**
+        * 菜单id
+        */
         private Long menuId;
+
+        /**
+        * 角色id
+        */
         private Long roleId;
     }
 }

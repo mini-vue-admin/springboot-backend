@@ -1,7 +1,7 @@
 package i.g.sbl.sky.config.auditlog;
 
-import i.g.sbl.sky.basic.cons.system.LogLevel;
-import i.g.sbl.sky.basic.cons.system.LogType;
+import i.g.sbl.sky.basic.cons.system.Level;
+import i.g.sbl.sky.basic.cons.system.Type;
 
 import java.lang.annotation.*;
 
@@ -17,9 +17,9 @@ public @interface AuditLog {
      */
     String value();
 
-    LogLevel level() default LogLevel.normal;
+    Level level() default Level.normal;
 
-    LogType type() default LogType.sys;
+    Type type() default Type.system_operate;
 
     String parameters() default "";
 
