@@ -15,10 +15,10 @@ create table sys_user
     nickname    varchar(30) not null comment '用户昵称',
     email       varchar(50) comment '用户邮箱',
     phone       varchar(11) comment '手机号码',
-    gender      char(1)      default 'U' comment '用户性别(M男 F女 U未知)',
+    gender      char(1)      default 'U' comment '用户性别(男:M, 女:F, 未知:U)',
     avatar      varchar(100) default '' comment '用户头像',
     password    varchar(100) default '' comment '密码',
-    status      tinyint(1)   default 1 comment '帐号状态(1正常 0停用)',
+    status      tinyint(1)   default 1 comment '帐号状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 100 comment = '用户表';
@@ -75,13 +75,13 @@ create table sys_menu
     parent_id   bigint(20)  not null comment '父菜单ID',
     menu_title  varchar(50) not null comment '菜单标题',
     menu_name   varchar(50) not null comment '菜单名称',
-    menu_type   char(1)      default 'M' comment '菜单类型(M目录 C菜单 F按钮)',
+    menu_type   char(1)      default 'M' comment '菜单类型(目录:M, 菜单:C, 按钮:F)',
     order_num   int(4)       default 0 comment '显示排序',
     path        varchar(255) comment '路由地址',
     component   varchar(255) comment '组件路径',
     query       varchar(255) comment '路由参数',
     icon        varchar(100) default '#' comment '菜单图标',
-    status      tinyint(1)      default 1 comment '菜单状态(1正常 0停用)',
+    status      tinyint(1)      default 1 comment '菜单状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 1000 comment = '菜单表';
@@ -132,8 +132,8 @@ create table sys_dict_data
     dict_value  varchar(100) default '' comment '字典键值',
     order_num   int(4)       default 0 comment '字典排序',
     css_class   varchar(100) comment '样式属性',
-    as_default  tinyint(1)   default 0 comment '是否默认(0否 1是)',
-    status      tinyint(1)      default 1 comment '状态(1正常 0停用)',
+    as_default  tinyint(1)   default 0 comment '是否默认(否:0, 是:1)',
+    status      tinyint(1)      default 1 comment '状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 1000 comment = '字典数据表';
@@ -153,7 +153,7 @@ create table sys_config
     remark       varchar(255) comment '备注',
     config_key   varchar(100) default '' comment '参数键名',
     config_value varchar(500) default '' comment '参数键值',
-    config_type  char(1)      default '1' comment '参数类型(0系统内置 1用户定义)',
+    config_type  char(1)      default '1' comment '参数类型(系统内置:0, 用户定义:1)',
     primary key (id)
 ) engine = innodb
   auto_increment = 100 comment = '参数配置表';
@@ -171,11 +171,11 @@ create table sys_log
     update_by    varchar(64)  default '' comment '更新者',
     update_time  datetime comment '更新时间',
     msg  varchar(255) default '' comment '操作描述',
-    level char(1) default '1' comment '危险级别(1普通 2警告 2危险)',
-    type char(1) default '1' comment '操作类型(1认证操作 2系统操作)',
+    level char(1) default '1' comment '危险级别(普通:1, 警告:2, 危险:3)',
+    type char(1) default '1' comment '操作类型(认证操作:1, 系统操作:2)',
     username    varchar(30)  comment '用户账号',
     nickname    varchar(30)  comment '用户昵称',
-    result_status char(1) comment '操作结果状态(0失败 1成功)',
+    result_status char(1) comment '操作结果状态(失败:0, 成功:1)',
     failed_reason varchar(1024) comment '失败原因',
     request_uri varchar(1024) comment '请求路径',
     parameters varchar(1024) comment '操作参数',
