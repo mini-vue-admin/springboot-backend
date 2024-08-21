@@ -20,17 +20,8 @@ public class LogController {
     @Autowired
     private LogService logService;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<Log>> getList() {
-        Log log = new Log();
-
-        List<Log> list = logService.findAll(log);
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<Log>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize

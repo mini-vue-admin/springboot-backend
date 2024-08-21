@@ -20,17 +20,8 @@ public class DictDataController {
     @Autowired
     private DictDataService dictDataService;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<DictData>> getList() {
-        DictData dictData = new DictData();
-
-        List<DictData> list = dictDataService.findAll(dictData);
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<DictData>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize

@@ -20,17 +20,8 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<Role>> getList() {
-        Role role = new Role();
-
-        List<Role> list = roleService.findAll(role);
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<Role>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize

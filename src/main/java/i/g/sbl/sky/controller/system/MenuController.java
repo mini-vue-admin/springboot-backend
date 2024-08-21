@@ -20,17 +20,8 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<Menu>> getList() {
-        Menu menu = new Menu();
-
-        List<Menu> list = menuService.findAll(menu);
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<Menu>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize

@@ -20,17 +20,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<User>> getList() {
-        User user = new User();
-
-        List<User> list = userService.findAll(user);
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<User>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize

@@ -21,24 +21,8 @@ public class ConfigController {
     @Autowired
     private ConfigService configService;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<Config>> getList(
-            @RequestParam(name = "configKey", required = false) String configKey,
-            @RequestParam(name = "configName", required = false) String configName,
-            @RequestParam(name = "configType", required = false) ConfigType configType
-    ) {
-        Config config = new Config();
-        config.setConfigKey(configKey);
-        config.setConfigName(configName);
-        config.setConfigType(configType);
-
-        List<Config> list = configService.findAll(config);
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<Config>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,

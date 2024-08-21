@@ -20,17 +20,8 @@ public class ${ENTITY_NAME}Controller {
     @Autowired
     private ${ENTITY_NAME}Service ${ENTITY_FIELD_NAME}Service;
 
-    @Operation(summary = "列表查询")
-    @GetMapping
-    public ResponseData<List<${ENTITY_NAME}>> getList() {
-        ${ENTITY_NAME} ${ENTITY_FIELD_NAME} = new ${ENTITY_NAME}();
-
-        List<${ENTITY_NAME}> list = ${ENTITY_FIELD_NAME}Service.findAll(${ENTITY_FIELD_NAME});
-        return ResponseData.success(list);
-    }
-
     @Operation(summary = "分页查询")
-    @GetMapping("page")
+    @GetMapping
     public ResponseData<PageData<${ENTITY_NAME}>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
