@@ -19,7 +19,7 @@ public class ${ENTITY_NAME}ServiceImpl implements ${ENTITY_NAME}Service {
 
 
     @Override
-    public Optional<${ENTITY_NAME}> findById(Long id) {
+    public Optional<${ENTITY_NAME}> findById(<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if> id) {
         return ${ENTITY_FIELD_NAME}Repo.findById(id);
     }
 
@@ -39,6 +39,7 @@ public class ${ENTITY_NAME}ServiceImpl implements ${ENTITY_NAME}Service {
         return ${ENTITY_FIELD_NAME}Repo.save(${ENTITY_FIELD_NAME});
     }
 
+<#if !(ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1))>
     @Transactional
     @Override
     public ${ENTITY_NAME} update(${ENTITY_NAME} ${ENTITY_FIELD_NAME}) {
@@ -46,16 +47,17 @@ public class ${ENTITY_NAME}ServiceImpl implements ${ENTITY_NAME}Service {
         item.copyNonNulls(${ENTITY_FIELD_NAME});
         return ${ENTITY_FIELD_NAME}Repo.save(item);
     }
+</#if>
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if> id) {
         ${ENTITY_FIELD_NAME}Repo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void delete(List<Long> id) {
+    public void delete(List<<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if>> id) {
         ${ENTITY_FIELD_NAME}Repo.deleteAllById(id);
     }
 }

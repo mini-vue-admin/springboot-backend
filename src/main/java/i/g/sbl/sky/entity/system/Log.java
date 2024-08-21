@@ -25,7 +25,7 @@ public class Log extends BaseEntity {
     private String msg;
 
     /**
-     * 危险级别(普通:1, 警告:2, 危险:3)
+     * 危险级别(正常:1, 警告:2, 危险:3)
      */
     private Level level;
 

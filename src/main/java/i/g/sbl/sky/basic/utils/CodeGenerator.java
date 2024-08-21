@@ -134,6 +134,9 @@ public class CodeGenerator {
 
                     if (hasEnumDefine(fieldComments.get(columnName))) {
                         Map<String, Object> enumDefine = new HashMap<>();
+                        enumDefine.put("ENUM_COMMENT", fieldComments.get(columnName).substring(0, fieldComments.get(columnName).indexOf("(")));
+                        enumDefine.put("TABLE_NAME", tableName);
+                        enumDefine.put("COLUMN_NAME", columnName);
                         enumDefine.put("ENUM_NAME", StringUtils.capitalize(CaseUtils.toCamelCase(columnName)));
                         enumDefine.put("ENUM_ITEMS", getEnumItems(fieldComments.get(columnName)));
                         enumDefine.put("ENUM_PACKAGE", this.basePackage + ".basic.cons." + moduleName);

@@ -4,6 +4,11 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * 是否默认
+ * 关联实体表: sys_dict_data
+ * 关联实体字段: as_default
+ */
 public enum AsDefault implements EnumBase<String> {
 
     /**

@@ -4,6 +4,11 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * 参数类型
+ * 关联实体表: sys_config
+ * 关联实体字段: config_type
+ */
 public enum ConfigType implements EnumBase<String> {
 
     /**

@@ -4,6 +4,11 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * 菜单类型
+ * 关联实体表: sys_menu
+ * 关联实体字段: menu_type
+ */
 public enum MenuType implements EnumBase<String> {
 
     /**

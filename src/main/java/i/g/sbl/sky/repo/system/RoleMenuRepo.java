@@ -10,7 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RoleMenuRepo extends CrudRepository<RoleMenu, RoleMenu.RoleMenuId>, JpaSpecificationExecutor<RoleMenu> {
-
+    
     default List<RoleMenu> findByFilter(RoleMenu query) {
         return this.findAll(
                 Filter.of(query)

@@ -4,6 +4,11 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * 危险级别
+ * 关联实体表: sys_log
+ * 关联实体字段: level
+ */
 public enum Level implements EnumBase<String> {
 
     /**

@@ -4,6 +4,11 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * ${ENUM_COMMENT}
+ * 关联实体表: ${TABLE_NAME}
+ * 关联实体字段: ${COLUMN_NAME}
+ */
 public enum ${ENUM_NAME} implements EnumBase<String> {
 
     <#list ENUM_ITEMS as item>/**

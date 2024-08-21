@@ -4,6 +4,11 @@ import i.g.sbl.sky.config.jpa.EnumBase;
 import i.g.sbl.sky.config.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * 帐号状态
+ * 关联实体表: sys_user
+ * 关联实体字段: status
+ */
 public enum Status implements EnumBase<String> {
 
     /**
