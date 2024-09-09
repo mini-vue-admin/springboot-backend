@@ -1,6 +1,5 @@
 package i.g.sbl.sky.basic.jpa.filters;
 
-import i.g.sbl.sky.basic.jpa.Filter;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

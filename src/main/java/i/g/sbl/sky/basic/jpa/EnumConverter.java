@@ -1,4 +1,4 @@
-package i.g.sbl.sky.config.jpa;
+package i.g.sbl.sky.basic.jpa;
 
 import jakarta.persistence.AttributeConverter;
 

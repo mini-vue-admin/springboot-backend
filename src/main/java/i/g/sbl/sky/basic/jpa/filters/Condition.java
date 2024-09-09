@@ -1,6 +1,5 @@
 package i.g.sbl.sky.basic.jpa.filters;
 
-import i.g.sbl.sky.basic.jpa.Filter;
 import lombok.Data;
 
 import java.util.List;

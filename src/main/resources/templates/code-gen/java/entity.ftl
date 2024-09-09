@@ -1,7 +1,7 @@
 package ${MODULE_PACKAGE};
 
 <#if EXTENDS_BASE_ENTITY>
-import i.g.sbl.sky.config.jpa.BaseEntity;
+import i.g.sbl.sky.basic.jpa.BaseEntity;
 </#if>
 <#if !EXTENDS_BASE_ENTITY>
 import jakarta.persistence.Id;

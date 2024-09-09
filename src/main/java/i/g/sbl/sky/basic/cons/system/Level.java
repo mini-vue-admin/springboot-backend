@@ -1,7 +1,7 @@
 package i.g.sbl.sky.basic.cons.system;
 
-import i.g.sbl.sky.config.jpa.EnumBase;
-import i.g.sbl.sky.config.jpa.EnumConverter;
+import i.g.sbl.sky.basic.jpa.EnumBase;
+import i.g.sbl.sky.basic.jpa.EnumConverter;
 import jakarta.persistence.Converter;
 
 /**

@@ -1,18 +1,18 @@
 package i.g.sbl.sky.entity.system;
 
-import i.g.sbl.sky.config.jpa.BaseEntity;
+import i.g.sbl.sky.basic.cons.system.Gender;
+import i.g.sbl.sky.basic.cons.system.Status;
+import i.g.sbl.sky.basic.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
-import i.g.sbl.sky.basic.cons.system.Gender;
-import i.g.sbl.sky.basic.cons.system.Status;
 
 /**
-* 用户表
-*/
+ * 用户表
+ */
 @Data
 @Entity
 @Table(name = "sys_user")

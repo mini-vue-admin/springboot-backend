@@ -1,6 +1,5 @@
-package i.g.sbl.sky.basic.jpa;
+package i.g.sbl.sky.basic.jpa.filters;
 
-import i.g.sbl.sky.basic.jpa.filters.SimpleFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.function.Function;
