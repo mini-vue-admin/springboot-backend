@@ -12,6 +12,7 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -20,8 +21,9 @@ import ${pkg};
 </#list>
 
 /**
-* ${TABLE_COMMENT}
-*/
+ * ${TABLE_COMMENT}
+ */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "${TABLE_NAME}")

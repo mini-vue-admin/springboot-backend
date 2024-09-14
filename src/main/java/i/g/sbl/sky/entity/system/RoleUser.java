@@ -1,17 +1,14 @@
 package i.g.sbl.sky.entity.system;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 /**
-* 角色用户表
-*/
+ * 角色用户表
+ */
 @Data
 @Entity
 @Table(name = "sys_role_user")
@@ -45,13 +42,13 @@ public class RoleUser {
     public static class RoleUserId {
 
         /**
-        * 用户id
-        */
+         * 用户id
+         */
         private Long userId;
 
         /**
-        * 角色id
-        */
+         * 角色id
+         */
         private Long roleId;
     }
 }

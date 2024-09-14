@@ -4,6 +4,7 @@ import i.g.sbl.sky.basic.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -12,6 +13,7 @@ import i.g.sbl.sky.basic.cons.system.ConfigType;
 /**
 * 参数配置表
 */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "sys_config")

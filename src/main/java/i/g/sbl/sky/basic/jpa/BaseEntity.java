@@ -1,6 +1,7 @@
 package i.g.sbl.sky.basic.jpa;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(of = "id")
 @Getter
 @Setter
 @MappedSuperclass

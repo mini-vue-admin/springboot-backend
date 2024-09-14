@@ -40,7 +40,7 @@ public class OpenApiConfig {
     public GroupedOpenApi commonApi() {
         return GroupedOpenApi.builder()
                 .group("公共接口")
-                .pathsToMatch("/genCode", "/healthy")
+                .pathsToMatch("/genCode", "/healthy", "/userRoles")
                 .build();
     }
 

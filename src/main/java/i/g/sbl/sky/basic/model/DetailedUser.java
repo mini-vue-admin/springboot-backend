@@ -3,30 +3,36 @@ package i.g.sbl.sky.basic.model;
 import i.g.sbl.sky.basic.cons.system.Gender;
 import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.entity.system.User;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Setter
 @Getter
 public class DetailedUser extends User {
-    public static final DetailedUser ANONYMOUSE = new DetailedUser();
+    /**
+     * 匿名用户
+     */
+    public static final DetailedUser ANONYMOUS = new DetailedUser();
 
     static {
-        ANONYMOUSE.setUsername("anonymouse");
-        ANONYMOUSE.setNickname("anonymouse");
-        ANONYMOUSE.setStatus(Status.enabled);
-        ANONYMOUSE.setGender(Gender.unknown);
+        ANONYMOUS.setUsername("anonymous");
+        ANONYMOUS.setNickname("anonymous");
+        ANONYMOUS.setStatus(Status.enabled);
+        ANONYMOUS.setGender(Gender.unknown);
     }
 
     private List<String> roles;
 
     public DetailedUser() {
-        this.roles = new ArrayList<String>();
+        this.roles = new ArrayList<>();
     }
 
     public DetailedUser(User user) {
@@ -37,6 +43,7 @@ public class DetailedUser extends User {
     public interface Mapper {
         Mapper INSTANCE = Mappers.getMapper(Mapper.class);
 
+        @Mapping(target = "roles", ignore = true)
         void map(User user, @MappingTarget DetailedUser detailedUser);
     }
 }
