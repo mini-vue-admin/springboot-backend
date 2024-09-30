@@ -7,6 +7,7 @@ import i.g.sbl.sky.repo.system.LogRepo;
 import i.g.sbl.sky.service.system.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class LogServiceImpl implements LogService {
         return logRepo.findByFilter(query, pageable);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Log create(Log log) {
         return logRepo.save(log);

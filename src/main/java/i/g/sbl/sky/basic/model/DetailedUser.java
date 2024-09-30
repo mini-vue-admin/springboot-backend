@@ -36,6 +36,7 @@ public class DetailedUser extends User {
     }
 
     public DetailedUser(User user) {
+        this();
         Mapper.INSTANCE.map(user, this);
     }
 

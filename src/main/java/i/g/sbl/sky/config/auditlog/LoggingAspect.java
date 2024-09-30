@@ -77,7 +77,6 @@ public class LoggingAspect {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveAuditLog(Log log) {
         try {
             logService.create(log);
