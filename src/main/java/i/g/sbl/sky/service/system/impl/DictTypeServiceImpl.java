@@ -1,7 +1,9 @@
 package i.g.sbl.sky.service.system.impl;
 
+import i.g.sbl.sky.basic.exception.BusinessException;
 import i.g.sbl.sky.basic.exception.NotFoundException;
 import i.g.sbl.sky.basic.model.PageData;
+import i.g.sbl.sky.entity.system.DictData;
 import i.g.sbl.sky.entity.system.DictType;
 import i.g.sbl.sky.repo.system.DictTypeRepo;
 import i.g.sbl.sky.service.system.DictTypeService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,6 +34,14 @@ public class DictTypeServiceImpl implements DictTypeService {
     @Override
     public PageData<DictType> findAll(DictType query, PageData<DictType> pageable) {
         return dictTypeRepo.findByFilter(query, pageable);
+    }
+
+    private void validate(DictType dictType) {
+        dictTypeRepo.findByDictType(dictType.getDictType()).ifPresent(exist -> {
+            if (dictType.getId() == null || !Objects.equals(exist.getId(), dictType.getId())) {
+                throw new BusinessException("字典类型已存在");
+            }
+        });
     }
 
     @Transactional

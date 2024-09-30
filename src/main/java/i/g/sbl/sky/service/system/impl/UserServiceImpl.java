@@ -2,6 +2,7 @@ package i.g.sbl.sky.service.system.impl;
 
 import i.g.sbl.sky.basic.cons.ConfigKeys;
 import i.g.sbl.sky.basic.exception.AuthenticationException;
+import i.g.sbl.sky.basic.exception.BusinessException;
 import i.g.sbl.sky.basic.exception.NotFoundException;
 import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.PageData;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -56,9 +58,19 @@ public class UserServiceImpl implements UserService {
         return userRepo.findByFilter(query, pageable);
     }
 
+    private void validate(User user) {
+        userRepo.findByUsername(user.getUsername()).ifPresent(exist -> {
+            if (user.getId() == null || !Objects.equals(exist.getId(), user.getId())) {
+                throw new BusinessException("用户名已存在");
+            }
+        });
+    }
+
     @Transactional
     @Override
     public User create(User user) {
+        validate(user);
+
         // 注意此处需要使用saveAndFlush
         User created = userRepo.saveAndFlush(user);
         this.resetPassword(created.getId());
@@ -68,6 +80,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User update(User user) {
+        validate(user);
         User item = userRepo.findById(user.getId()).orElseThrow(NotFoundException::new);
         item.copyNonNulls(user);
         return userRepo.save(item);
@@ -87,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void validatePassword(String username, String password) throws AuthenticationException {
-        Optional<User> user = userRepo.findByUsernameAndPassword(username, password);
+        Optional<UserPassword> user = userPasswordRepo.findByUsernameAndPassword(username, password);
         if (user.isEmpty()) {
             throw new AuthenticationException("Authentication failed, invalid username or password");
         }

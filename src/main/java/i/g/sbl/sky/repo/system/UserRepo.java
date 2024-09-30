@@ -36,10 +36,5 @@ public interface UserRepo extends JpaRepository<User, String>, JpaSpecificationE
 
     Optional<User> findByUsername(String username);
 
-    @Query(value = "select * from sys_user where username = :username and password = :password", nativeQuery = true)
-    Optional<User> findByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
 
-    @Modifying
-    @Query(value = "update sys_user set password = :password where id = :id", nativeQuery = true)
-    void updatePassword(@Param("id") String id,@Param("password") String password);
 }

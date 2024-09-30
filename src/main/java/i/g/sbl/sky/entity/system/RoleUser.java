@@ -1,7 +1,9 @@
 package i.g.sbl.sky.entity.system;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -13,6 +15,8 @@ import org.mapstruct.factory.Mappers;
 @Entity
 @Table(name = "sys_role_user")
 @IdClass(RoleUser.RoleUserId.class)
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleUser {
 
     /**

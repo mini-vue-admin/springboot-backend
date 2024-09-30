@@ -4,7 +4,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -16,6 +18,8 @@ import org.mapstruct.factory.Mappers;
 @Entity
 @Table(name = "sys_role_menu")
 @IdClass(RoleMenu.RoleMenuId.class)
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleMenu {
 
     /**

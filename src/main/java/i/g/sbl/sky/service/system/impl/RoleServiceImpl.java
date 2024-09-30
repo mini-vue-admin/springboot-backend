@@ -1,5 +1,6 @@
 package i.g.sbl.sky.service.system.impl;
 
+import i.g.sbl.sky.basic.exception.BusinessException;
 import i.g.sbl.sky.basic.exception.NotFoundException;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.Role;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,6 +33,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public PageData<Role> findAll(Role query, PageData<Role> pageable) {
         return roleRepo.findByFilter(query, pageable);
+    }
+
+    private void validate(Role role) {
+        roleRepo.findByRoleKey(role.getRoleKey()).ifPresent(exist -> {
+            if (role.getId() == null || !Objects.equals(exist.getId(), role.getId())) {
+                throw new BusinessException("角色已存在");
+            }
+        });
     }
 
     @Transactional
