@@ -26,24 +26,36 @@ public class SimpleFilter<T> implements Filter<T> {
     private final boolean ignoreBlank = true;
 
     public SimpleFilter() {
-        this(null);
+        this(null, null);
+    }
+
+    public SimpleFilter(Class<T> entityClass, T instance) {
+        if (entityClass == null) {
+            if (instance == null) {
+                Type type = this.getClass().getGenericSuperclass();
+                if (type instanceof ParameterizedType parameterizedType) {
+                    if (parameterizedType.getActualTypeArguments() != null && parameterizedType.getActualTypeArguments().length > 0) {
+                        entityClass = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+                    }
+                }
+            } else {
+                entityClass = (Class<T>) instance.getClass();
+            }
+        }
+
+        this.entityClass = entityClass;
+        this.instance = instance;
+
+        this.proxyInstance = ProxyJpaEntity.getProxyJpaEntity(this.entityClass, this.instance);
+        this.conditions = new ArrayList<>();
     }
 
     public SimpleFilter(T instance) {
-        if (instance == null) {
-            Type type = this.getClass().getGenericSuperclass();
-            if (type instanceof ParameterizedType parameterizedType) {
-                if (parameterizedType.getActualTypeArguments() != null && parameterizedType.getActualTypeArguments().length > 0) {
-                    this.entityClass = (Class<T>) parameterizedType.getActualTypeArguments()[0];
-                }
-            }
-        } else {
-            this.instance = instance;
-            this.entityClass = (Class<T>) instance.getClass();
-        }
-        this.proxyInstance = ProxyJpaEntity.getProxyJpaEntity(this.entityClass, this.instance);
-        this.conditions = new ArrayList<>();
+        this(null, instance);
+    }
 
+    public SimpleFilter(Class<T> clazz) {
+        this(clazz, null);
     }
 
     @Override
@@ -170,7 +182,7 @@ public class SimpleFilter<T> implements Filter<T> {
     @Override
     public Filter<T> and(Filter<?>... filters) {
         this.conditions.add(
-                new Condition(Condition.Op.or, null, null, Arrays.asList(filters))
+                new Condition(Condition.Op.and, null, null, Arrays.asList(filters))
         );
         return this;
     }
@@ -178,7 +190,7 @@ public class SimpleFilter<T> implements Filter<T> {
     @Override
     public Filter<T> or(Filter<?>... filters) {
         this.conditions.add(
-                new Condition(Condition.Op.and, null, null, Arrays.asList(filters))
+                new Condition(Condition.Op.or, null, null, Arrays.asList(filters))
         );
         return this;
     }

@@ -1,20 +1,23 @@
 package i.g.sbl.sky.entity.system;
 
+import i.g.sbl.sky.basic.cons.system.MenuType;
+import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.basic.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
-import i.g.sbl.sky.basic.cons.system.Status;
-import i.g.sbl.sky.basic.cons.system.MenuType;
+
+import java.util.List;
 
 /**
-* 菜单表
-*/
+ * 菜单表
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
@@ -71,6 +74,10 @@ public class Menu extends BaseEntity {
      * 菜单状态(停用:0, 正常:1)
      */
     private Status status;
+
+
+    @Transient
+    private List<Menu> children;
 
     public void copyNonNulls(Menu menu) {
         Mapper.INSTANCE.map(menu, this);

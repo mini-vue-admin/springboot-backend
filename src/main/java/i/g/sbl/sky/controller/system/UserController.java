@@ -1,12 +1,15 @@
 package i.g.sbl.sky.controller.system;
 
+import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.User;
+import i.g.sbl.sky.entity.system.vo.UserQuery;
 import i.g.sbl.sky.service.system.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +27,25 @@ public class UserController {
     @GetMapping
     public ResponseData<PageData<User>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "nickname", required = false) String nickname,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "phone", required = false) String phone,
+            @RequestParam(name = "status", required = false) Status status,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
-        User user = new User();
+        UserQuery user = new UserQuery();
+        user.setUsername(username);
+        user.setNickname(nickname);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setStatus(status);
+        user.setKeyword(keyword);
 
-        PageData<User> page = userService.findAll(user, PageData.of(pageIndex, pageSize));
+        PageData<User> page = userService.findAll(user, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

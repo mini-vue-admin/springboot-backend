@@ -8,6 +8,7 @@ import i.g.sbl.sky.service.system.ConfigService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,16 +27,20 @@ public class ConfigController {
     public ResponseData<PageData<Config>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
             @RequestParam(name = "configKey", required = false) String configKey,
             @RequestParam(name = "configName", required = false) String configName,
+            @RequestParam(name = "configValue", required = false) String configValue,
             @RequestParam(name = "configType", required = false) ConfigType configType
     ) {
         Config config = new Config();
         config.setConfigKey(configKey);
+        config.setConfigValue(configValue);
         config.setConfigName(configName);
         config.setConfigType(configType);
 
-        PageData<Config> page = configService.findAll(config, PageData.of(pageIndex, pageSize));
+        PageData<Config> page = configService.findAll(config, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

@@ -42,6 +42,8 @@ public class RoleUser {
         void map(RoleUser source, @MappingTarget RoleUser target);
     }
 
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Data
     public static class RoleUserId {
 

@@ -7,6 +7,7 @@ import i.g.sbl.sky.service.system.DictDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +25,19 @@ public class DictDataController {
     @GetMapping
     public ResponseData<PageData<DictData>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @RequestParam(name = "dictType", required = false) String dictType,
+            @RequestParam(name = "dictLabel", required = false) String dictLabel,
+            @RequestParam(name = "dictValue", required = false) String dictValue
     ) {
         DictData dictData = new DictData();
+        dictData.setDictLabel(dictLabel);
+        dictData.setDictValue(dictValue);
+        dictData.setDictType(dictType);
 
-        PageData<DictData> page = dictDataService.findAll(dictData, PageData.of(pageIndex, pageSize));
+        PageData<DictData> page = dictDataService.findAll(dictData, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

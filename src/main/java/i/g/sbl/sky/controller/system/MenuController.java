@@ -1,12 +1,16 @@
 package i.g.sbl.sky.controller.system;
 
+import i.g.sbl.sky.basic.cons.system.MenuType;
+import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.Menu;
+import i.g.sbl.sky.entity.system.vo.MenuQuery;
 import i.g.sbl.sky.service.system.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +28,29 @@ public class MenuController {
     @GetMapping
     public ResponseData<PageData<Menu>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
-    ) {
-        Menu menu = new Menu();
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sortField", defaultValue = "orderNum", required = false) String sortField,
+            @RequestParam(name = "sortOrder", defaultValue = "ASC", required = false) Sort.Direction sortOrder,
+            @RequestParam(name = "parentId", required = false)String parentId,
+            @RequestParam(name = "menuTitle", required = false)String menuTitle,
+            @RequestParam(name = "menuType", required = false) MenuType menuType,
+            @RequestParam(name = "menuName", required = false)String menuName,
+            @RequestParam(name = "path", required = false)String path,
+            @RequestParam(name = "component", required = false)String component,
+            @RequestParam(name = "status", required = false)Status status,
+            @RequestParam(name = "childRecursion", required = false, defaultValue = "false") Boolean childRecursion
+            ) {
+        MenuQuery menu = new MenuQuery();
+        menu.setParentId(parentId);
+        menu.setMenuTitle(menuTitle);
+        menu.setMenuType(menuType);
+        menu.setMenuName(menuName);
+        menu.setPath(path);
+        menu.setComponent(component);
+        menu.setStatus(status);
+        menu.setChildRecursion(childRecursion);
 
-        PageData<Menu> page = menuService.findAll(menu, PageData.of(pageIndex, pageSize));
+        PageData<Menu> page = menuService.findAll(menu, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

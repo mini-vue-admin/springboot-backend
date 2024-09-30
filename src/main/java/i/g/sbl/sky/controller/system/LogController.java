@@ -1,5 +1,7 @@
 package i.g.sbl.sky.controller.system;
 
+import i.g.sbl.sky.basic.cons.system.Level;
+import i.g.sbl.sky.basic.cons.system.Type;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.Log;
@@ -7,6 +9,7 @@ import i.g.sbl.sky.service.system.LogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +27,23 @@ public class LogController {
     @GetMapping
     public ResponseData<PageData<Log>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @RequestParam(name = "msg", required = false) String msg,
+            @RequestParam(name = "level", required = false) Level level,
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "nickname", required = false) String nickname,
+            @RequestParam(name = "type", required = false) Type type
     ) {
         Log log = new Log();
+        log.setMsg(msg);
+        log.setLevel(level);
+        log.setUsername(username);
+        log.setNickname(nickname);
+        log.setType(type);
 
-        PageData<Log> page = logService.findAll(log, PageData.of(pageIndex, pageSize));
+        PageData<Log> page = logService.findAll(log, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

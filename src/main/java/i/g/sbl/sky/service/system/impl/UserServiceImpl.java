@@ -6,11 +6,14 @@ import i.g.sbl.sky.basic.exception.BusinessException;
 import i.g.sbl.sky.basic.exception.NotFoundException;
 import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.PageData;
+import i.g.sbl.sky.entity.system.Role;
 import i.g.sbl.sky.entity.system.User;
 import i.g.sbl.sky.entity.system.UserPassword;
+import i.g.sbl.sky.entity.system.vo.UserQuery;
 import i.g.sbl.sky.repo.system.UserPasswordRepo;
 import i.g.sbl.sky.repo.system.UserRepo;
 import i.g.sbl.sky.service.system.ConfigService;
+import i.g.sbl.sky.service.system.RoleService;
 import i.g.sbl.sky.service.system.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,9 @@ public class UserServiceImpl implements UserService {
     private ConfigService configService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private UserPasswordRepo userPasswordRepo;
 
 
@@ -45,16 +51,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<DetailedUser> getDetailedUserByUsername(String username) {
         Optional<User> user = getByUsername(username);
-        return user.map(DetailedUser::new);
+        return user.map(it -> {
+            DetailedUser detailedUser = new DetailedUser(it);
+            List<String> roles = roleService.findByUserId(it.getId()).stream().map(Role::getRoleKey).toList();
+            detailedUser.setRoles(roles);
+            return detailedUser;
+        });
     }
 
     @Override
-    public List<User> findAll(User query) {
+    public List<User> findAll(UserQuery query) {
         return userRepo.findByFilter(query);
     }
 
     @Override
-    public PageData<User> findAll(User query, PageData<User> pageable) {
+    public PageData<User> findAll(UserQuery query, PageData<User> pageable) {
         return userRepo.findByFilter(query, pageable);
     }
 
@@ -113,4 +124,5 @@ public class UserServiceImpl implements UserService {
         user.setPassword(configService.getValue(ConfigKeys.USER_DEFAULT_PASSWORD, "88888888"));
         userPasswordRepo.save(user);
     }
+
 }

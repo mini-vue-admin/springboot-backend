@@ -7,6 +7,7 @@ import i.g.sbl.sky.service.system.DictTypeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +25,17 @@ public class DictTypeController {
     @GetMapping
     public ResponseData<PageData<DictType>> getPage(
             @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @RequestParam(name= "dictType", required = false) String dictType,
+            @RequestParam(name= "dictName", required = false) String dictName
     ) {
-        DictType dictType = new DictType();
+        DictType type = new DictType();
+        type.setDictType(dictType);
+        type.setDictName(dictName);
 
-        PageData<DictType> page = dictTypeService.findAll(dictType, PageData.of(pageIndex, pageSize));
+        PageData<DictType> page = dictTypeService.findAll(type, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

@@ -24,6 +24,16 @@ public interface Filter<T> extends Specification<T> {
     /**
      * 创建一个新的Filter实例，并使用给定的实例初始化。
      *
+     * @param clazz 过滤对象的类型
+     * @return 返回一个使用给定实例初始化的Filter实例。
+     */
+    static <T> Filter<T> of(Class<T> clazz) {
+        return new SimpleFilter<>(clazz);
+    }
+
+    /**
+     * 创建一个新的Filter实例，并使用给定的实例初始化。
+     *
      * @param instance 用于初始化Filter的实例。
      * @return 返回一个使用给定实例初始化的Filter实例。
      */

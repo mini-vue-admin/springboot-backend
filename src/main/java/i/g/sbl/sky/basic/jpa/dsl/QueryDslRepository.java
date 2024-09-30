@@ -10,8 +10,8 @@ public interface QueryDslRepository<T> {
 
     List<T> findAll(JPQLQuery<T> jpqlQuery);
 
-    <R> List<R> findAny(JPQLQuery<R> jpqlQuery);
-
     Page<T> findAll(JPQLQuery<T> jpqlQuery, Pageable pageable);
+
+    <R> List<R> findAny(JPQLQuery<R> jpqlQuery);
 
 }

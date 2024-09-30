@@ -46,6 +46,8 @@ public class RoleMenu {
     }
 
     @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class RoleMenuId {
 
         /**
