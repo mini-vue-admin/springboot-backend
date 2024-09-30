@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface DictTypeRepo extends CrudRepository<DictType, Long>, JpaSpecificationExecutor<DictType> {
+public interface DictTypeRepo extends CrudRepository<DictType, String>, JpaSpecificationExecutor<DictType> {
     
     default List<DictType> findByFilter(DictType query) {
         return this.findAll(

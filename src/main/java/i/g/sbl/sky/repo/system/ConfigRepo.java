@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ConfigRepo extends CrudRepository<Config, Long>, JpaSpecificationExecutor<Config> {
+public interface ConfigRepo extends CrudRepository<Config, String>, JpaSpecificationExecutor<Config> {
 
     default List<Config> findByFilter(Config query) {
         return this.findAll(

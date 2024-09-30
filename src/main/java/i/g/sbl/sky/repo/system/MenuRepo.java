@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface MenuRepo extends CrudRepository<Menu, Long>, JpaSpecificationExecutor<Menu> {
+public interface MenuRepo extends CrudRepository<Menu, String>, JpaSpecificationExecutor<Menu> {
     
     default List<Menu> findByFilter(Menu query) {
         return this.findAll(

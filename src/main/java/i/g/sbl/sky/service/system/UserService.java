@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(String id);
 
     Optional<User> getByUsername(String username);
 
@@ -23,9 +23,9 @@ public interface UserService {
 
     User update(User user);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void delete(List<Long> id);
+    void delete(List<String> id);
 
     void validate(String username, String password);
 }

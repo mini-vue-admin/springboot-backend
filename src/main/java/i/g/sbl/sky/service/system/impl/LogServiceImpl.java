@@ -19,7 +19,7 @@ public class LogServiceImpl implements LogService {
 
 
     @Override
-    public Optional<Log> findById(Long id) {
+    public Optional<Log> findById(String id) {
         return logRepo.findById(id);
     }
 
@@ -49,13 +49,13 @@ public class LogServiceImpl implements LogService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         logRepo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void delete(List<Long> id) {
+    public void delete(List<String> id) {
         logRepo.deleteAllById(id);
     }
 }

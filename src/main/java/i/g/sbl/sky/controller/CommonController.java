@@ -53,7 +53,7 @@ public class CommonController {
                 new JPAQuery<Tuple>().select(user, roleUser).from(user)
                         .leftJoin(roleUser)
                         .on(roleUser.userId.eq(user.id))
-                        .where(user.id.eq(1L))
+                        .where(user.id.eq(""))
         );
 
         for (Tuple tuple : all) {

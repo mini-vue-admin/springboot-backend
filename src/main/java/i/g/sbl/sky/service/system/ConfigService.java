@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ConfigService {
 
-    Optional<Config> findById(Long id);
+    Optional<Config> findById(String id);
 
     List<Config> findAll(Config query);
 
@@ -18,8 +18,8 @@ public interface ConfigService {
 
     Config update(Config config);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void delete(List<Long> id);
+    void delete(List<String> id);
 
 }

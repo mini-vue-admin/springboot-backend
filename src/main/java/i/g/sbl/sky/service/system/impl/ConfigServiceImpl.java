@@ -19,7 +19,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 
     @Override
-    public Optional<Config> findById(Long id) {
+    public Optional<Config> findById(String id) {
         return configRepo.findById(id);
     }
 
@@ -49,13 +49,13 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         configRepo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void delete(List<Long> id) {
+    public void delete(List<String> id) {
         configRepo.deleteAllById(id);
     }
 }

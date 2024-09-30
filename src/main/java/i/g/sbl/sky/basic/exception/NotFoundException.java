@@ -1,17 +1,17 @@
 package i.g.sbl.sky.basic.exception;
 
-import i.g.sbl.sky.basic.cons.ResponseCode;
+import i.g.sbl.sky.basic.cons.BusinessCode;
 
 public class NotFoundException extends BusinessException {
     public NotFoundException() {
-        super(ResponseCode.NOT_FOUND_ERROR, "Resource not found");
+        super(BusinessCode.NOT_FOUND_ERROR, "Resource not found");
     }
 
     public NotFoundException(String message) {
-        super(ResponseCode.NOT_FOUND_ERROR, message);
+        super(BusinessCode.NOT_FOUND_ERROR, message);
     }
 
     public NotFoundException(String message, Exception e) {
-        super(ResponseCode.NOT_FOUND_ERROR, message, e);
+        super(BusinessCode.NOT_FOUND_ERROR, message, e);
     }
 }

@@ -33,8 +33,8 @@ public class ${ENTITY_NAME}Controller {
     }
 
     @Operation(summary = "根据ID获取")
-    @GetMapping("{id:\\d+}")
-    public ResponseData<${ENTITY_NAME}> getById(@PathVariable("id") Long id) {
+    @GetMapping("{id}")
+    public ResponseData<${ENTITY_NAME}> getById(@PathVariable("id") String id) {
         Optional<${ENTITY_NAME}> ${ENTITY_FIELD_NAME} = ${ENTITY_FIELD_NAME}Service.findById(id);
         return ResponseData.success(${ENTITY_FIELD_NAME});
     }
@@ -54,15 +54,15 @@ public class ${ENTITY_NAME}Controller {
     }
 
     @Operation(summary = "删除")
-    @DeleteMapping("{id:\\d+}")
-    public ResponseData<Void> delete(@PathVariable("id") Long id) {
+    @DeleteMapping("{id}")
+    public ResponseData<Void> delete(@PathVariable("id") String id) {
         ${ENTITY_FIELD_NAME}Service.delete(id);
         return ResponseData.success();
     }
 
     @Operation(summary = "批量删除")
     @DeleteMapping()
-    public ResponseData<Void> delete(@RequestParam(name = "id") List<Long> id) {
+    public ResponseData<Void> delete(@RequestParam(name = "id") List<String> id) {
         ${ENTITY_FIELD_NAME}Service.delete(id);
         return ResponseData.success();
     }

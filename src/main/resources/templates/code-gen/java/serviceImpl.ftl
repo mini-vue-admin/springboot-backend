@@ -19,7 +19,7 @@ public class ${ENTITY_NAME}ServiceImpl implements ${ENTITY_NAME}Service {
 
 
     @Override
-    public Optional<${ENTITY_NAME}> findById(<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if> id) {
+    public Optional<${ENTITY_NAME}> findById(<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>String</#if> id) {
         return ${ENTITY_FIELD_NAME}Repo.findById(id);
     }
 
@@ -51,13 +51,13 @@ public class ${ENTITY_NAME}ServiceImpl implements ${ENTITY_NAME}Service {
 
     @Transactional
     @Override
-    public void delete(<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if> id) {
+    public void delete(<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>String</#if> id) {
         ${ENTITY_FIELD_NAME}Repo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void delete(List<<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if>> id) {
+    public void delete(List<<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>String</#if>> id) {
         ${ENTITY_FIELD_NAME}Repo.deleteAllById(id);
     }
 }

@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,9 +22,10 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuidv7")
+    @GenericGenerator(name = "uuidv7", type = UUIDv7Generator.class)
     @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    private String id;
 
     @CreationTimestamp
     @Column(name = "create_time", updatable = false)

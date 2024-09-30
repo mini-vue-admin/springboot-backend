@@ -22,13 +22,13 @@ public class RoleMenu {
      * 菜单id
      */
     @Id
-    private Long menuId;
+    private String menuId;
 
     /**
      * 角色id
      */
     @Id
-    private Long roleId;
+    private String roleId;
 
     public void copyNonNulls(RoleMenu roleMenu) {
         Mapper.INSTANCE.map(roleMenu, this);
@@ -47,11 +47,11 @@ public class RoleMenu {
         /**
         * 菜单id
         */
-        private Long menuId;
+        private String menuId;
 
         /**
         * 角色id
         */
-        private Long roleId;
+        private String roleId;
     }
 }

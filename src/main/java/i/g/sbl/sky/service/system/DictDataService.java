@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface DictDataService {
 
-    Optional<DictData> findById(Long id);
+    Optional<DictData> findById(String id);
 
     List<DictData> findAll(DictData query);
 
@@ -18,8 +18,8 @@ public interface DictDataService {
 
     DictData update(DictData dictData);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void delete(List<Long> id);
+    void delete(List<String> id);
 
 }

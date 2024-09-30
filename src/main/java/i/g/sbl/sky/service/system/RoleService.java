@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface RoleService {
 
-    Optional<Role> findById(Long id);
+    Optional<Role> findById(String id);
 
     List<Role> findAll(Role query);
 
@@ -18,8 +18,8 @@ public interface RoleService {
 
     Role update(Role role);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void delete(List<Long> id);
+    void delete(List<String> id);
 
 }

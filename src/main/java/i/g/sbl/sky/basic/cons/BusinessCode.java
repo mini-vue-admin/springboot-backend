@@ -1,6 +1,6 @@
 package i.g.sbl.sky.basic.cons;
 
-public interface ResponseCode {
+public interface BusinessCode {
     int OK = 0;
     int FAILURE = 1000;
     int AUTHENTICATION_ERROR = 1001;

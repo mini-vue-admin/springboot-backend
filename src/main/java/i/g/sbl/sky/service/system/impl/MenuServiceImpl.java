@@ -19,7 +19,7 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Override
-    public Optional<Menu> findById(Long id) {
+    public Optional<Menu> findById(String id) {
         return menuRepo.findById(id);
     }
 
@@ -49,13 +49,13 @@ public class MenuServiceImpl implements MenuService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         menuRepo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void delete(List<Long> id) {
+    public void delete(List<String> id) {
         menuRepo.deleteAllById(id);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface LogRepo extends CrudRepository<Log, Long>, JpaSpecificationExecutor<Log> {
+public interface LogRepo extends CrudRepository<Log, String>, JpaSpecificationExecutor<Log> {
     
     default List<Log> findByFilter(Log query) {
         return this.findAll(

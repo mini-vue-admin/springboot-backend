@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface LogService {
 
-    Optional<Log> findById(Long id);
+    Optional<Log> findById(String id);
 
     List<Log> findAll(Log query);
 
@@ -18,8 +18,8 @@ public interface LogService {
 
     Log update(Log log);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void delete(List<Long> id);
+    void delete(List<String> id);
 
 }

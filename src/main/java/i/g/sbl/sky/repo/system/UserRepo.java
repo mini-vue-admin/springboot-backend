@@ -12,7 +12,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepo extends CrudRepository<User, Long>, JpaSpecificationExecutor<User>, QuerydslPredicateExecutor<User>, QueryDslRepository<User> {
+public interface UserRepo extends CrudRepository<User, String>, JpaSpecificationExecutor<User>, QuerydslPredicateExecutor<User>, QueryDslRepository<User> {
 
     default List<User> findByFilter(User query) {
         return this.findAll(

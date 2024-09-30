@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @Operation(summary = "根据ID获取")
-    @GetMapping("{id:\\d+}")
-    public ResponseData<User> getById(@PathVariable("id") Long id) {
+    @GetMapping("{id}")
+    public ResponseData<User> getById(@PathVariable("id") String id) {
         Optional<User> user = userService.findById(id);
         return ResponseData.success(user);
     }
@@ -54,15 +54,15 @@ public class UserController {
     }
 
     @Operation(summary = "删除")
-    @DeleteMapping("{id:\\d+}")
-    public ResponseData<Void> delete(@PathVariable("id") Long id) {
+    @DeleteMapping("{id}")
+    public ResponseData<Void> delete(@PathVariable("id") String id) {
         userService.delete(id);
         return ResponseData.success();
     }
 
     @Operation(summary = "批量删除")
     @DeleteMapping()
-    public ResponseData<Void> delete(@RequestParam(name = "id") List<Long> id) {
+    public ResponseData<Void> delete(@RequestParam(name = "id") List<String> id) {
         userService.delete(id);
         return ResponseData.success();
     }

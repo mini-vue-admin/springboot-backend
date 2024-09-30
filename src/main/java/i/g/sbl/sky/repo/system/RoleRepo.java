@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface RoleRepo extends CrudRepository<Role, Long>, JpaSpecificationExecutor<Role> {
+public interface RoleRepo extends CrudRepository<Role, String>, JpaSpecificationExecutor<Role> {
     
     default List<Role> findByFilter(Role query) {
         return this.findAll(

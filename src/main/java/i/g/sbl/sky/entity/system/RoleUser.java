@@ -19,13 +19,13 @@ public class RoleUser {
      * 用户id
      */
     @Id
-    private Long userId;
+    private String userId;
 
     /**
      * 角色id
      */
     @Id
-    private Long roleId;
+    private String roleId;
 
     public void copyNonNulls(RoleUser roleUser) {
         Mapper.INSTANCE.map(roleUser, this);
@@ -44,11 +44,11 @@ public class RoleUser {
         /**
          * 用户id
          */
-        private Long userId;
+        private String userId;
 
         /**
          * 角色id
          */
-        private Long roleId;
+        private String roleId;
     }
 }

@@ -19,7 +19,7 @@ public class DictDataServiceImpl implements DictDataService {
 
 
     @Override
-    public Optional<DictData> findById(Long id) {
+    public Optional<DictData> findById(String id) {
         return dictDataRepo.findById(id);
     }
 
@@ -49,13 +49,13 @@ public class DictDataServiceImpl implements DictDataService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         dictDataRepo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void delete(List<Long> id) {
+    public void delete(List<String> id) {
         dictDataRepo.deleteAllById(id);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ${ENTITY_NAME}Repo extends CrudRepository<${ENTITY_NAME}, <#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>Long</#if>>, JpaSpecificationExecutor<${ENTITY_NAME}> {
+public interface ${ENTITY_NAME}Repo extends CrudRepository<${ENTITY_NAME}, <#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>String</#if>>, JpaSpecificationExecutor<${ENTITY_NAME}> {
     
     default List<${ENTITY_NAME}> findByFilter(${ENTITY_NAME} query) {
         return this.findAll(

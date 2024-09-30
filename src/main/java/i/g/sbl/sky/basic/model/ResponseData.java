@@ -1,6 +1,6 @@
 package i.g.sbl.sky.basic.model;
 
-import i.g.sbl.sky.basic.cons.ResponseCode;
+import i.g.sbl.sky.basic.cons.BusinessCode;
 import i.g.sbl.sky.basic.exception.BusinessException;
 import i.g.sbl.sky.basic.exception.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -20,11 +20,11 @@ public class ResponseData<T> {
 
     public static <T> ResponseData<T> success(Optional<T> data) {
         T item = data.orElseThrow(NotFoundException::new);
-        return new ResponseData<>(ResponseCode.OK, null, item);
+        return new ResponseData<>(BusinessCode.OK, null, item);
     }
 
     public static <T> ResponseData<T> success(T data) {
-        return new ResponseData<>(ResponseCode.OK, null, data);
+        return new ResponseData<>(BusinessCode.OK, null, data);
     }
 
     public static ResponseData<Void> success() {
@@ -32,12 +32,12 @@ public class ResponseData<T> {
     }
 
     public static ResponseData<Void> failure(String msg) {
-        return new ResponseData<>(ResponseCode.FAILURE, msg, null);
+        return new ResponseData<>(BusinessCode.FAILURE, msg, null);
     }
 
 
     public static <T> ResponseData<T> failure(String msg, T data) {
-        return new ResponseData<>(ResponseCode.FAILURE, msg, data);
+        return new ResponseData<>(BusinessCode.FAILURE, msg, data);
     }
 
     public static ResponseData<Void> failure(Exception e) {

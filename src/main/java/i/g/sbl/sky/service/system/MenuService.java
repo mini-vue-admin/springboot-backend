@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MenuService {
 
-    Optional<Menu> findById(Long id);
+    Optional<Menu> findById(String id);
 
     List<Menu> findAll(Menu query);
 
@@ -18,8 +18,8 @@ public interface MenuService {
 
     Menu update(Menu menu);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void delete(List<Long> id);
+    void delete(List<String> id);
 
 }
