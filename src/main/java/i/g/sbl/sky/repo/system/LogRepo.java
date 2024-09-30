@@ -4,12 +4,13 @@ import i.g.sbl.sky.basic.jpa.filters.Filter;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.Log;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface LogRepo extends CrudRepository<Log, String>, JpaSpecificationExecutor<Log> {
+public interface LogRepo extends JpaRepository<Log, String>, JpaSpecificationExecutor<Log> {
     
     default List<Log> findByFilter(Log query) {
         return this.findAll(

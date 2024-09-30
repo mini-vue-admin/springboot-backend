@@ -1,11 +1,15 @@
 package i.g.sbl.sky.service.system.impl;
 
+import i.g.sbl.sky.basic.cons.ConfigKeys;
 import i.g.sbl.sky.basic.exception.AuthenticationException;
 import i.g.sbl.sky.basic.exception.NotFoundException;
 import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.User;
+import i.g.sbl.sky.entity.system.UserPassword;
+import i.g.sbl.sky.repo.system.UserPasswordRepo;
 import i.g.sbl.sky.repo.system.UserRepo;
+import i.g.sbl.sky.service.system.ConfigService;
 import i.g.sbl.sky.service.system.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private ConfigService configService;
+
+    @Autowired
+    private UserPasswordRepo userPasswordRepo;
 
 
     @Override
@@ -49,7 +59,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user) {
-        return userRepo.save(user);
+        // 注意此处需要使用saveAndFlush
+        User created = userRepo.saveAndFlush(user);
+        this.resetPassword(created.getId());
+        return created;
     }
 
     @Transactional
@@ -69,14 +82,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void delete(List<String> id) {
-        userRepo.deleteAllById(id);
+        userRepo.deleteAllByIdInBatch(id);
     }
 
     @Override
-    public void validate(String username, String password) {
+    public void validatePassword(String username, String password) throws AuthenticationException {
         Optional<User> user = userRepo.findByUsernameAndPassword(username, password);
         if (user.isEmpty()) {
-            throw new AuthenticationException("Invalid username or password");
+            throw new AuthenticationException("Authentication failed, invalid username or password");
         }
+    }
+
+    @Transactional
+    @Override
+    public void resetPassword(String id) {
+        UserPassword user = userPasswordRepo.findById(id).orElseThrow(NotFoundException::new);
+        user.setPassword(configService.getValue(ConfigKeys.USER_DEFAULT_PASSWORD, "88888888"));
+        userPasswordRepo.save(user);
     }
 }

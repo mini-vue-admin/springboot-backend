@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicUpdate;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -17,6 +18,7 @@ import org.mapstruct.factory.Mappers;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@DynamicUpdate
 @Table(name = "sys_user")
 public class User extends BaseEntity {
 
@@ -49,11 +51,6 @@ public class User extends BaseEntity {
      * 用户头像
      */
     private String avatar;
-
-    /**
-     * 密码
-     */
-    private String password;
 
     /**
      * 帐号状态(停用:0, 正常:1)

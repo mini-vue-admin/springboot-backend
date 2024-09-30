@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicUpdate;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -26,6 +27,7 @@ import ${pkg};
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@DynamicUpdate
 @Table(name = "${TABLE_NAME}")
 <#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>
 @IdClass(${ENTITY_NAME}.${ENTITY_NAME}Id.class)

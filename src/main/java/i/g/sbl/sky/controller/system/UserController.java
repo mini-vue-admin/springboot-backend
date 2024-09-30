@@ -53,6 +53,13 @@ public class UserController {
         return ResponseData.success(updated);
     }
 
+    @Operation(summary = "重置密码")
+    @PutMapping("{id}/resetPassword")
+    public ResponseData<Void> resetPassword(@PathVariable("id") String id) {
+        userService.resetPassword(id);
+        return ResponseData.success();
+    }
+
     @Operation(summary = "删除")
     @DeleteMapping("{id}")
     public ResponseData<Void> delete(@PathVariable("id") String id) {

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ConfigRepo extends CrudRepository<Config, String>, JpaSpecificationExecutor<Config> {
 
@@ -30,4 +31,6 @@ public interface ConfigRepo extends CrudRepository<Config, String>, JpaSpecifica
         );
         return PageData.of(page);
     }
+
+    Optional<Config> findByConfigKey(String key);
 }

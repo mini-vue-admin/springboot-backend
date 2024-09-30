@@ -4,12 +4,13 @@ import i.g.sbl.sky.basic.jpa.filters.Filter;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.Role;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface RoleRepo extends CrudRepository<Role, String>, JpaSpecificationExecutor<Role> {
+public interface RoleRepo extends JpaRepository<Role, String>, JpaSpecificationExecutor<Role> {
     
     default List<Role> findByFilter(Role query) {
         return this.findAll(

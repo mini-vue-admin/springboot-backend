@@ -33,6 +33,12 @@ public class ConfigServiceImpl implements ConfigService {
         return configRepo.findByFilter(query, pageable);
     }
 
+    @Override
+    public String getValue(String key,
+                           String defaultValue) {
+        return configRepo.findByConfigKey(key).map(Config::getConfigValue).orElse(defaultValue);
+    }
+
     @Transactional
     @Override
     public Config create(Config config) {

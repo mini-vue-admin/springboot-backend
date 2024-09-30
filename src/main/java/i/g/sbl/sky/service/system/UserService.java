@@ -1,5 +1,6 @@
 package i.g.sbl.sky.service.system;
 
+import i.g.sbl.sky.basic.exception.AuthenticationException;
 import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.User;
@@ -27,5 +28,7 @@ public interface UserService {
 
     void delete(List<String> id);
 
-    void validate(String username, String password);
+    void validatePassword(String username, String password) throws AuthenticationException;
+
+    void resetPassword(String id);
 }
