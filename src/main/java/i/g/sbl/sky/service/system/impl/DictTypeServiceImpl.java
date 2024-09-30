@@ -56,6 +56,6 @@ public class DictTypeServiceImpl implements DictTypeService {
     @Transactional
     @Override
     public void delete(List<String> id) {
-        dictTypeRepo.deleteAllById(id);
+        dictTypeRepo.deleteAllByIdInBatch(id);
     }
 }

@@ -62,6 +62,6 @@ public class ConfigServiceImpl implements ConfigService {
     @Transactional
     @Override
     public void delete(List<String> id) {
-        configRepo.deleteAllById(id);
+        configRepo.deleteAllByIdInBatch(id);
     }
 }

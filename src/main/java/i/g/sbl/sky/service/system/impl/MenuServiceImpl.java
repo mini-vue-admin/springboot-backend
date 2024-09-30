@@ -56,6 +56,6 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     @Override
     public void delete(List<String> id) {
-        menuRepo.deleteAllById(id);
+        menuRepo.deleteAllByIdInBatch(id);
     }
 }

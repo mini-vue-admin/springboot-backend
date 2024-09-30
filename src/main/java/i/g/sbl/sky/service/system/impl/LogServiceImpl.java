@@ -57,6 +57,6 @@ public class LogServiceImpl implements LogService {
     @Transactional
     @Override
     public void delete(List<String> id) {
-        logRepo.deleteAllById(id);
+        logRepo.deleteAllByIdInBatch(id);
     }
 }

@@ -56,6 +56,6 @@ public class DictDataServiceImpl implements DictDataService {
     @Transactional
     @Override
     public void delete(List<String> id) {
-        dictDataRepo.deleteAllById(id);
+        dictDataRepo.deleteAllByIdInBatch(id);
     }
 }

@@ -49,6 +49,6 @@ public class RoleUserServiceImpl implements RoleUserService {
     @Transactional
     @Override
     public void delete(List<RoleUser.RoleUserId> id) {
-        roleUserRepo.deleteAllById(id);
+        roleUserRepo.deleteAllByIdInBatch(id);
     }
 }

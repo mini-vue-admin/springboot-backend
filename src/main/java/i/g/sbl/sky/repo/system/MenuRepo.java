@@ -6,12 +6,11 @@ import i.g.sbl.sky.entity.system.Menu;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 public interface MenuRepo extends JpaRepository<Menu, String>, JpaSpecificationExecutor<Menu> {
-    
+
     default List<Menu> findByFilter(Menu query) {
         return this.findAll(
                 Filter.of(query)

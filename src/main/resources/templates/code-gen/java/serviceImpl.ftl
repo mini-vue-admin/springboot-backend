@@ -58,6 +58,6 @@ public class ${ENTITY_NAME}ServiceImpl implements ${ENTITY_NAME}Service {
     @Transactional
     @Override
     public void delete(List<<#if ENTITY_PRIMARY_KEYS?? && (ENTITY_PRIMARY_KEYS?size gt 1)>${ENTITY_NAME}.${ENTITY_NAME}Id<#else>String</#if>> id) {
-        ${ENTITY_FIELD_NAME}Repo.deleteAllById(id);
+        ${ENTITY_FIELD_NAME}Repo.deleteAllByIdInBatch(id);
     }
 }

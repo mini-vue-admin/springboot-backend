@@ -49,6 +49,6 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     @Transactional
     @Override
     public void delete(List<RoleMenu.RoleMenuId> id) {
-        roleMenuRepo.deleteAllById(id);
+        roleMenuRepo.deleteAllByIdInBatch(id);
     }
 }
