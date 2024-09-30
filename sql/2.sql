@@ -1,7 +1,11 @@
--- 插入系统管理菜单，并获取其ID
 INSERT INTO sys_menu (id, create_by, create_time, update_by, update_time, parent_id, menu_title, menu_name, menu_type,
                       order_num, path, component, query, icon, status)
-VALUES ('019240ba-634f-7214-b08f-36da372c821b', 'admin', NOW(), 'admin', NOW(), '0', '系统管理', 'system', 'M', 1,
+VALUES ('01924292-b086-7095-8c2b-85b51d04d2e9', 'admin', NOW(), 'admin', NOW(), '0', '首页', 'index', 'C', 1,
+        '', 'index', NULL, '#', '1');
+
+INSERT INTO sys_menu (id, create_by, create_time, update_by, update_time, parent_id, menu_title, menu_name, menu_type,
+                      order_num, path, component, query, icon, status)
+VALUES ('019240ba-634f-7214-b08f-36da372c821b', 'admin', NOW(), 'admin', NOW(), '0', '系统管理', 'system', 'M', 999,
         '/system', NULL, NULL, '#', '1');
 
 -- 插入用户管理菜单
