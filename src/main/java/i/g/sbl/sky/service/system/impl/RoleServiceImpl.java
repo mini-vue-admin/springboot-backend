@@ -109,8 +109,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PageData<Menu> findMenuPage(MenuQuery query, PageData<User> page) {
-        return menuRepo.findRoleMenus(query, page);
+    public PageData<Menu> findMenuPage(MenuQuery query, PageData<User> pageable) {
+        PageData<Menu> page = menuRepo.findRoleMenus(query, pageable);
+        if (query.getChildRecursion() != null && query.getChildRecursion()) {
+            for (Menu menu : page.getList()) {
+                List<Menu> children = menuRepo.findByParentId(menu.getId());
+                menu.setChildren(children);
+            }
+        }
+        return page;
     }
 
     @Transactional

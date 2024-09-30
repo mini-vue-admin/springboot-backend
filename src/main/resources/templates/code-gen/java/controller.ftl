@@ -23,8 +23,8 @@ public class ${ENTITY_NAME}Controller {
     @Operation(summary = "分页查询")
     @GetMapping
     public ResponseData<PageData<${ENTITY_NAME}>> getPage(
-            @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
+            @Parameter(description = "页号", required = true) @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
+            @Parameter(description = "分页大小", required = true) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
     ) {
         ${ENTITY_NAME} ${ENTITY_FIELD_NAME} = new ${ENTITY_NAME}();
 

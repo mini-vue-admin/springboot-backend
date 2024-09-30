@@ -10,6 +10,7 @@ import i.g.sbl.sky.entity.system.vo.MenuQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -53,7 +54,8 @@ public interface MenuRepo extends JpaRepository<Menu, String>, JpaSpecificationE
                         .from(menu)
                         .innerJoin(roleMenu)
                         .on(menu.id.eq(roleMenu.menuId))
-                        .where(roleMenu.roleId.eq(query.getRoleId())),
+                        .where(roleMenu.roleId.eq(query.getRoleId()))
+                        .where(StringUtils.hasText(query.getParentId()) ? menu.parentId.eq(query.getParentId()) : null),
                 pageable.toPageRequest()
         );
         return PageData.of(page);

@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,15 +57,51 @@ public interface UserRepo extends JpaRepository<User, String>, JpaSpecificationE
 
 
     default PageData<User> findRoleMembers(UserQuery query, PageData<User> pageable) {
-        Page<User> page = findAll(
-                new JPAQuery<>()
-                        .select(user)
-                        .from(user)
-                        .innerJoin(roleUser)
-                        .on(user.id.eq(roleUser.userId))
-                        .where(roleUser.roleId.eq(query.getRoleId())),
-                pageable.toPageRequest()
-        );
-        return PageData.of(page);
+        if (query.getRoleReverse() != null && query.getRoleReverse()) {
+
+            Page<User> page = findAll(
+                    new JPAQuery<>()
+                            .select(user).distinct()
+                            .from(user)
+                            .leftJoin(roleUser)
+                            .on(user.id.eq(roleUser.userId))
+                            .where(roleUser.roleId.ne(query.getRoleId()).or(roleUser.roleId.isNull()))
+                            .where(StringUtils.hasText(query.getKeyword()) ?
+                                    user.username.like(query.getKeyword())
+                                            .or(user.nickname.like(query.getKeyword()))
+                                            .or(user.email.like(query.getKeyword()))
+                                            .or(user.phone.like(query.getKeyword()))
+                                    : null)
+                            .where(StringUtils.hasText(query.getUsername()) ? user.username.like(query.getUsername()) : null)
+                            .where(StringUtils.hasText(query.getNickname()) ? user.nickname.like(query.getNickname()) : null)
+                            .where(StringUtils.hasText(query.getEmail()) ? user.email.like(query.getEmail()) : null)
+                            .where(StringUtils.hasText(query.getPhone()) ? user.phone.like(query.getPhone()) : null)
+                            .where(query.getStatus() != null ? user.status.eq(query.getStatus()) : null),
+                    pageable.toPageRequest()
+            );
+            return PageData.of(page);
+        } else {
+            Page<User> page = findAll(
+                    new JPAQuery<>()
+                            .select(user)
+                            .from(user)
+                            .innerJoin(roleUser)
+                            .on(user.id.eq(roleUser.userId))
+                            .where(roleUser.roleId.eq(query.getRoleId()))
+                            .where(StringUtils.hasText(query.getKeyword()) ?
+                                    user.username.like(query.getKeyword())
+                                            .or(user.nickname.like(query.getKeyword()))
+                                            .or(user.email.like(query.getKeyword()))
+                                            .or(user.phone.like(query.getKeyword()))
+                                    : null)
+                            .where(StringUtils.hasText(query.getUsername()) ? user.username.like(query.getUsername()) : null)
+                            .where(StringUtils.hasText(query.getNickname()) ? user.nickname.like(query.getNickname()) : null)
+                            .where(StringUtils.hasText(query.getEmail()) ? user.email.like(query.getEmail()) : null)
+                            .where(StringUtils.hasText(query.getPhone()) ? user.phone.like(query.getPhone()) : null)
+                            .where(query.getStatus() != null ? user.status.eq(query.getStatus()) : null),
+                    pageable.toPageRequest()
+            );
+            return PageData.of(page);
+        }
     }
 }

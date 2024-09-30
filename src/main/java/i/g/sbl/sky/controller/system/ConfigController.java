@@ -6,6 +6,7 @@ import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.Config;
 import i.g.sbl.sky.service.system.ConfigService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -25,14 +26,14 @@ public class ConfigController {
     @Operation(summary = "分页查询")
     @GetMapping
     public ResponseData<PageData<Config>> getPage(
-            @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
-            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
-            @RequestParam(name = "configKey", required = false) String configKey,
-            @RequestParam(name = "configName", required = false) String configName,
-            @RequestParam(name = "configValue", required = false) String configValue,
-            @RequestParam(name = "configType", required = false) ConfigType configType
+            @Parameter(description = "页号", required = true) @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
+            @Parameter(description = "分页大小", required = true) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @Parameter(description = "排序字段") @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @Parameter(description = "排序方向") @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @Parameter(description = "配置名称，模糊查询") @RequestParam(name = "configName", required = false) String configName,
+            @Parameter(description = "配置键名，模糊查询") @RequestParam(name = "configKey", required = false) String configKey,
+            @Parameter(description = "配置键值，模糊查询") @RequestParam(name = "configValue", required = false) String configValue,
+            @Parameter(description = "配置类型") @RequestParam(name = "configType", required = false) ConfigType configType
     ) {
         Config config = new Config();
         config.setConfigKey(configKey);

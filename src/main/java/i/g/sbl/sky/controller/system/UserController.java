@@ -7,6 +7,7 @@ import i.g.sbl.sky.entity.system.User;
 import i.g.sbl.sky.entity.system.vo.UserQuery;
 import i.g.sbl.sky.service.system.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -26,16 +27,16 @@ public class UserController {
     @Operation(summary = "分页查询")
     @GetMapping
     public ResponseData<PageData<User>> getPage(
-            @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
-            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
-            @RequestParam(name = "username", required = false) String username,
-            @RequestParam(name = "nickname", required = false) String nickname,
-            @RequestParam(name = "email", required = false) String email,
-            @RequestParam(name = "phone", required = false) String phone,
-            @RequestParam(name = "status", required = false) Status status,
-            @RequestParam(name = "keyword", required = false) String keyword
+            @Parameter(description = "页号", required = true) @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
+            @Parameter(description = "分页大小", required = true) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @Parameter(description = "排序字段") @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @Parameter(description = "排序方向") @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @Parameter(description = "用户名，模糊查询") @RequestParam(name = "username", required = false) String username,
+            @Parameter(description = "用户昵称，模糊查询") @RequestParam(name = "nickname", required = false) String nickname,
+            @Parameter(description = "邮箱，模糊查询") @RequestParam(name = "email", required = false) String email,
+            @Parameter(description = "手机号，模糊查询") @RequestParam(name = "phone", required = false) String phone,
+            @Parameter(description = "状态") @RequestParam(name = "status", required = false) Status status,
+            @Parameter(description = "关键字，基于用户名、用户昵称、邮箱、手机号多个字段模糊查询") @RequestParam(name = "keyword", required = false) String keyword
     ) {
         UserQuery user = new UserQuery();
         user.setUsername(username);

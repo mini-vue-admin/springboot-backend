@@ -5,6 +5,7 @@ import i.g.sbl.sky.basic.model.ResponseData;
 import i.g.sbl.sky.entity.system.DictData;
 import i.g.sbl.sky.service.system.DictDataService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -24,13 +25,13 @@ public class DictDataController {
     @Operation(summary = "分页查询")
     @GetMapping
     public ResponseData<PageData<DictData>> getPage(
-            @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-            @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
-            @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
-            @RequestParam(name = "dictType", required = false) String dictType,
-            @RequestParam(name = "dictLabel", required = false) String dictLabel,
-            @RequestParam(name = "dictValue", required = false) String dictValue
+            @Parameter(description = "页号", required = true) @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
+            @Parameter(description = "分页大小", required = true) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @Parameter(description = "排序字段") @RequestParam(name = "sortField", defaultValue = "updateTime", required = false) String sortField,
+            @Parameter(description = "排序方向") @RequestParam(name = "sortOrder", defaultValue = "DESC", required = false) Sort.Direction sortOrder,
+            @Parameter(description = "字典类型，精确查询") @RequestParam(name = "dictType", required = false) String dictType,
+            @Parameter(description = "字典标签，模糊查询") @RequestParam(name = "dictLabel", required = false) String dictLabel,
+            @Parameter(description = "字典键值，精确查询") @RequestParam(name = "dictValue", required = false) String dictValue
     ) {
         DictData dictData = new DictData();
         dictData.setDictLabel(dictLabel);
