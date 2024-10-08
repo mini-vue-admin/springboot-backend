@@ -6,6 +6,7 @@ import i.g.sbl.sky.entity.system.RoleMenu;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
 
@@ -24,4 +25,7 @@ public interface RoleMenuRepo extends JpaRepository<RoleMenu, RoleMenu.RoleMenuI
         );
         return PageData.of(page);
     }
+
+    @Modifying
+    void deleteByRoleId(String roleId);
 }

@@ -1,7 +1,7 @@
 INSERT INTO sys_menu (id, create_by, create_time, update_by, update_time, parent_id, menu_title, menu_name, menu_type,
                       order_num, path, component, query, icon, status)
 VALUES ('01924292-b086-7095-8c2b-85b51d04d2e9', 'admin', NOW(), 'admin', NOW(), '0', '首页', 'index', 'C', 1,
-        '', 'index', NULL, '#', '1');
+        '/', 'index', NULL, '#', '1');
 
 INSERT INTO sys_menu (id, create_by, create_time, update_by, update_time, parent_id, menu_title, menu_name, menu_type,
                       order_num, path, component, query, icon, status)

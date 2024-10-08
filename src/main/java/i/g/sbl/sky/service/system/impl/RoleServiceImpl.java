@@ -123,6 +123,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public void addMenu(String roleId, MemberIds menuIds) {
+        roleMenuRepo.deleteByRoleId(roleId);
         List<String> members = menuIds.getMemberIds();
         for (String member : members) {
             roleMenuRepo.save(new RoleMenu(member, roleId));

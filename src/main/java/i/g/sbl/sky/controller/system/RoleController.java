@@ -149,8 +149,8 @@ public class RoleController {
         return ResponseData.success(page);
     }
 
-    @Operation(summary = "角色菜单-新增")
-    @PostMapping("{id}/menus")
+    @Operation(summary = "角色菜单-创建", description = "注意：该接口会先删除之前的菜单关联")
+    @PutMapping("{id}/menus")
     public ResponseData<Void> addMenus(
             @PathVariable("id") String id,
             @RequestBody MemberIds memberIds

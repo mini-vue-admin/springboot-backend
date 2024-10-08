@@ -1,8 +1,10 @@
 package i.g.sbl.sky.controller.system;
 
 import i.g.sbl.sky.basic.cons.system.Status;
+import i.g.sbl.sky.basic.model.DetailedUser;
 import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.basic.model.ResponseData;
+import i.g.sbl.sky.basic.model.UserContext;
 import i.g.sbl.sky.entity.system.User;
 import i.g.sbl.sky.entity.system.vo.UserQuery;
 import i.g.sbl.sky.service.system.UserService;
@@ -55,6 +57,13 @@ public class UserController {
     public ResponseData<User> getById(@PathVariable("id") String id) {
         Optional<User> user = userService.findById(id);
         return ResponseData.success(user);
+    }
+
+    @Operation(summary = "获取当前登录用户")
+    @GetMapping("own")
+    public ResponseData<DetailedUser> getOwn() {
+        DetailedUser detailedUser = UserContext.getUser().orElse(DetailedUser.ANONYMOUS);
+        return ResponseData.success(detailedUser);
     }
 
     @Operation(summary = "创建")
