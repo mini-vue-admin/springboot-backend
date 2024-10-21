@@ -18,7 +18,7 @@ create table sys_user
     gender      char(1)      default 'U' comment '用户性别(男:M, 女:F, 未知:U)',
     avatar      varchar(100) default '' comment '用户头像',
     password    varchar(100) default '' comment '密码',
-    status      char(1)   default 1 comment '帐号状态(停用:0, 正常:1)',
+    status      char(1)   default '1' comment '帐号状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb comment = '用户表';
 
@@ -74,12 +74,12 @@ create table sys_menu
     menu_title  varchar(50) not null comment '菜单标题',
     menu_name   varchar(50) not null comment '菜单名称',
     menu_type   char(1)      default 'M' comment '菜单类型(目录:M, 菜单:C, 按钮:F)',
-    order_num   int(4)       default 0 comment '显示排序',
+    order_num   int(4)       default 1 comment '显示排序',
     path        varchar(255) comment '路由地址',
     component   varchar(255) comment '组件路径',
     query       varchar(255) comment '路由参数',
     icon        varchar(100) default '#' comment '菜单图标',
-    status      char(1)      default 1 comment '菜单状态(停用:0, 正常:1)',
+    status      char(1)      default '1' comment '菜单状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb comment = '菜单表';
 
@@ -126,10 +126,10 @@ create table sys_dict_data
     dict_type   varchar(100) default '' comment '字典类型',
     dict_label  varchar(100) default '' comment '字典标签',
     dict_value  varchar(100) default '' comment '字典键值',
-    order_num   int(4)       default 0 comment '字典排序',
+    order_num   int(4)       default 1 comment '字典排序',
     css_class   varchar(100) comment '样式属性',
-    as_default  char(1)   default 0 comment '是否默认(否:0, 是:1)',
-    status      char(1)      default 1 comment '状态(停用:0, 正常:1)',
+    as_default  char(1)   default '0' comment '是否默认(否:0, 是:1)',
+    status      char(1)      default '1' comment '状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb comment = '字典数据表';
 

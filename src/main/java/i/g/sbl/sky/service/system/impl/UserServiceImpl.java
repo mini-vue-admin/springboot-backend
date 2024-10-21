@@ -124,5 +124,4 @@ public class UserServiceImpl implements UserService {
         user.setPassword(configService.getValue(ConfigKeys.USER_DEFAULT_PASSWORD, "88888888"));
         userPasswordRepo.save(user);
     }
-
 }
