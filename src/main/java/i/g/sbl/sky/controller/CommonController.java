@@ -25,8 +25,7 @@ import static i.g.sbl.sky.entity.system.QUser.user;
 @Tag(name = "Common", description = "公共接口")
 @RestController
 public class CommonController {
-    @Autowired
-    private DataSource dataSource;
+
 
     @Operation(summary = "健康状态")
     @GetMapping("healthy")
@@ -34,12 +33,7 @@ public class CommonController {
         return ResponseData.success();
     }
 
-    @Operation(summary = "genCode")
-    @PostMapping("genCode")
-    public void genCode(@RequestBody CodeGenerator generator) {
-        generator.setDataSource(dataSource);
-        generator.generate();
-    }
+
 
     @Autowired
     private UserRepo userRepo;

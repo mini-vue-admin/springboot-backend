@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
+import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.translate.CnTranslator;
 import i.g.sbl.translate.Language;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,10 +20,7 @@ import javax.sql.DataSource;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -36,16 +34,16 @@ public class CodeGenerator {
     @JsonIgnore
     private DataSource dataSource;
 
-    @Schema( type = "string", example = "i.g.sbl.sky")
+    @Schema(type = "string", example = "i.g.sbl.sky")
     private String basePackage = "i.g.sbl.sky";
 
-    @Schema( type = "string", example = "system")
+    @Schema(type = "string", example = "system")
     private String moduleName = "system";
 
-    @Schema( type = "string", example = "sys_.*")
+    @Schema(type = "string", example = "sys_.*")
     private String tableNameRegex = "sys_.*";
 
-    @Schema( type = "string", example = "/tmp")
+    @Schema(type = "string", example = "/tmp")
     private String outputDir = "/tmp";
 
     /**
@@ -55,6 +53,11 @@ public class CodeGenerator {
 
     @JsonIgnore
     private Configuration cfg;
+
+    public CodeGenerator(DataSource dataSource) {
+        super();
+        this.dataSource = dataSource;
+    }
 
     @SneakyThrows
     public CodeGenerator() {
@@ -67,7 +70,7 @@ public class CodeGenerator {
     /**
      * 从数据库中提取匹配的表，并获取所有元信息
      *
-     * @return  每张表，作为一条记录
+     * @return 每张表，作为一条记录
      */
     @SneakyThrows
     public List<Map<String, Object>> retireMeta() {
@@ -148,7 +151,7 @@ public class CodeGenerator {
                         pkgs.add(enumDefine.get("ENUM_PACKAGE") + "." + enumDefine.get("ENUM_NAME"));
                     }
                     if (primaryKey.contains(columnName)) {
-                        List<Map<String, Object>> primaryKeys =(List<Map<String, Object>>) root.computeIfAbsent("ENTITY_PRIMARY_KEYS", k -> new ArrayList<>());
+                        List<Map<String, Object>> primaryKeys = (List<Map<String, Object>>) root.computeIfAbsent("ENTITY_PRIMARY_KEYS", k -> new ArrayList<>());
                         primaryKeys.add(fieldDefine);
                     }
                     fields.add(fieldDefine);
@@ -197,7 +200,7 @@ public class CodeGenerator {
     public void generate() {
         List<Map<String, Object>> maps = retireMeta();
 
-        log.info("Parse generator meta: {}", JsonUtils.toPrettyJson(maps));
+        log.debug("Parse generator meta: {}", JsonUtils.toPrettyJson(maps));
 
         for (Map<String, Object> root : maps) {
             root.put("MODULE_NAME", moduleName);
@@ -218,7 +221,7 @@ public class CodeGenerator {
                 }
             }
 
-            List<Map<String, ?>>  enums = (List<Map<String, ?>>) root.get("ENUMS");
+            List<Map<String, ?>> enums = (List<Map<String, ?>>) root.get("ENUMS");
             if (enums != null) {
                 for (Map<String, ?> anEnum : enums) {
                     Template temp = cfg.getTemplate(enum_template);
@@ -337,5 +340,52 @@ public class CodeGenerator {
             case "entity.ftl" -> entityName;
             default -> throw new IllegalStateException("Unexpected value: " + template);
         };
+    }
+
+    public record TableInfo(String tableName, String tableType, String tableComment) {
+    }
+
+    @SneakyThrows
+    public PageData<TableInfo> getTables(String tableName, PageData<TableInfo> page) {
+        try (Connection connection = dataSource.getConnection()) {
+            String schema = connection.getCatalog();
+            String sql = STR."""
+                   SELECT TABLE_NAME, TABLE_TYPE, TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = '\{schema}'
+                   """;
+            if (StringUtils.hasText(tableName)) {
+                sql += " AND TABLE_NAME = ?";
+            }
+            if (StringUtils.hasText(page.getSortField())) {
+                sql += " ORDER BY " + page.getSortField();
+            }
+            if (page.getSortOrder() != null) {
+                sql += " " + page.getSortOrder().name();
+            }
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            if (StringUtils.hasText(tableName)) {
+                statement.setString(1, tableName);
+            }
+            List<TableInfo> infos = new ArrayList<>();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                TableInfo info = new TableInfo(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
+                infos.add(info);
+            }
+            page.setList(infos);
+            resultSet.close();
+            statement.close();
+
+            PreparedStatement countStatement = connection.prepareStatement(STR."""
+                select count(1) from (\{sql}) a
+            """);
+            ResultSet countResult = countStatement.executeQuery();
+            if (countResult.next()) {
+                page.setTotalCount(countResult.getLong(1));
+            }
+            countResult.close();
+            countStatement.close();
+            return page;
+        }
     }
 }
