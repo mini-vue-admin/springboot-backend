@@ -356,7 +356,7 @@ public class CodeGenerator {
                 sql += " AND TABLE_NAME = ?";
             }
             if (StringUtils.hasText(page.getSortField())) {
-                sql += " ORDER BY " + page.getSortField();
+                sql += " ORDER BY " + CaseUtils.toSnakeCase(page.getSortField());
             }
             if (page.getSortOrder() != null) {
                 sql += " " + page.getSortOrder().name();

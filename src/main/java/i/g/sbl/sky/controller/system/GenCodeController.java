@@ -35,7 +35,7 @@ public class GenCodeController {
     public ResponseData<PageData<CodeGenerator.TableInfo>> getPage(
             @Parameter(description = "页号", required = true) @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @Parameter(description = "分页大小", required = true) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-            @Parameter(description = "排序字段") @RequestParam(name = "sortField", defaultValue = "TABLE_NAME", required = false) String sortField,
+            @Parameter(description = "排序字段") @RequestParam(name = "sortField", defaultValue = "tableName", required = false) String sortField,
             @Parameter(description = "排序方向") @RequestParam(name = "sortOrder", defaultValue = "ASC", required = false) Sort.Direction sortOrder,
             @Parameter(description = "表名，模糊查询") @RequestParam(name = "tableName", required = false) String tableName
     ) {
