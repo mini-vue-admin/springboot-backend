@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import net.lingala.zip4j.ZipFile;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -51,12 +52,17 @@ public class GenCodeController {
         Path zipPath = Files.createTempFile("codeGen", ".zip");
         Path tmpDir = Files.createTempDirectory("codeGen");
 
-        generator.setOutputDir(tmpDir.toAbsolutePath().toString());
-        generator.setRemoveTableNamePrefix(true);
-        generator.setDataSource(dataSource);
-        generator.generate();
+        try (ZipFile zip = new ZipFile(zipPath.toFile())) {
 
-        new ZipFile(zipPath.toFile()).addFolder(tmpDir.toFile());
+            generator.setOutputDir(tmpDir.toAbsolutePath().toString());
+            generator.setRemoveTableNamePrefix(true);
+            generator.setDataSource(dataSource);
+            generator.generate();
+            zip.addFolder(tmpDir.toFile());
+        } finally {
+            FileUtils.deleteDirectory(tmpDir.toFile());
+        }
+
         response.reset();
         response.setContentLength((int) zipPath.toFile().length());
         response.setContentType("application/octet-stream");
@@ -65,6 +71,8 @@ public class GenCodeController {
                 InputStream input = Files.newInputStream(zipPath);
                 OutputStream outputStream = response.getOutputStream()) {
             IOUtils.copy(input, outputStream);
+        } finally {
+            Files.deleteIfExists(zipPath);
         }
     }
 }

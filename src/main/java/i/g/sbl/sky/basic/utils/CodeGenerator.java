@@ -8,6 +8,7 @@ import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.translate.CnTranslator;
 import i.g.sbl.translate.Language;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.models.Paths;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 @Slf4j
 @Data
 public class CodeGenerator {
+    public static final String[] vue_templates = new String[]{"api.js.ftl", "index.vue.ftl"};
     public static final String[] crud_templates = new String[]{"controller.ftl", "service.ftl", "serviceImpl.ftl", "repo.ftl", "entity.ftl"};
     public static final String enum_template = "enum.ftl";
     public static final String[] base_entity_columns = new String[]{"id", "create_time", "create_by", "update_time", "update_by"};
@@ -62,7 +64,7 @@ public class CodeGenerator {
     @SneakyThrows
     public CodeGenerator() {
         cfg = new Configuration(Configuration.VERSION_2_3_23);
-        cfg.setDirectoryForTemplateLoading(ResourceUtils.getFile("classpath:templates/code-gen/java"));
+        cfg.setDirectoryForTemplateLoading(ResourceUtils.getFile("classpath:templates/code-gen"));
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
     }
@@ -127,21 +129,23 @@ public class CodeGenerator {
                         Set<String> pkgs = (Set<String>) root.get("ENTITY_PACKAGE_IMPORTS");
                         pkgs.add("java.time.LocalDateTime");
                     }
+                    String columnComment = fieldComments.get(columnName);
                     Map<String, Object> fieldDefine = new HashMap<>(Map.of(
                             "FIELD_NAME", CaseUtils.toCamelCase(columnName),
                             "FIELD_TYPE", fieldType,
                             "PRIMARY_KEY", primaryKey.contains(columnName),
-                            "FIELD_COMMENT", fieldComments.get(columnName),
-                            "IS_ENUM", hasEnumDefine(fieldComments.get(columnName))
+                            "FIELD_COMMENT", columnComment,
+                                "FIELD_SHORT_COMMENT", columnComment.indexOf("(") > 0? columnComment.substring(0, columnComment.indexOf("(")) : columnComment,
+                            "IS_ENUM", hasEnumDefine(columnComment)
                     ));
 
-                    if (hasEnumDefine(fieldComments.get(columnName))) {
+                    if (hasEnumDefine(columnComment)) {
                         Map<String, Object> enumDefine = new HashMap<>();
-                        enumDefine.put("ENUM_COMMENT", fieldComments.get(columnName).substring(0, fieldComments.get(columnName).indexOf("(")));
+                        enumDefine.put("ENUM_COMMENT", columnComment.substring(0, columnComment.indexOf("(")));
                         enumDefine.put("TABLE_NAME", tableName);
                         enumDefine.put("COLUMN_NAME", columnName);
                         enumDefine.put("ENUM_NAME", StringUtils.capitalize(CaseUtils.toCamelCase(columnName)));
-                        enumDefine.put("ENUM_ITEMS", getEnumItems(fieldComments.get(columnName)));
+                        enumDefine.put("ENUM_ITEMS", getEnumItems(columnComment));
                         enumDefine.put("ENUM_PACKAGE", this.basePackage + ".basic.cons." + moduleName);
 
                         fieldDefine.put("ENUM_DEFINE", enumDefine);
@@ -207,7 +211,7 @@ public class CodeGenerator {
             root.put("BASE_PACKAGE", basePackage);
 
             for (String template : crud_templates) {
-                Template temp = cfg.getTemplate(template);
+                Template temp = cfg.getTemplate("java/" + template);
                 String[] packageDir = toPackages(template, this.basePackage, this.moduleName);
                 root.put("MODULE_PACKAGE", String.join(".", packageDir));
                 Path dir = Path.of(this.outputDir, packageDir);
@@ -224,7 +228,7 @@ public class CodeGenerator {
             List<Map<String, ?>> enums = (List<Map<String, ?>>) root.get("ENUMS");
             if (enums != null) {
                 for (Map<String, ?> anEnum : enums) {
-                    Template temp = cfg.getTemplate(enum_template);
+                    Template temp = cfg.getTemplate("java/" +enum_template);
                     String enumPackage = (String) anEnum.get("ENUM_PACKAGE");
                     Path dir = Path.of(this.outputDir, enumPackage.split("\\."));
                     if (!Files.exists(dir)) {
@@ -237,6 +241,18 @@ public class CodeGenerator {
                 }
             }
 
+            String fileName = StringUtils.uncapitalize((String) root.get("ENTITY_NAME"));
+            Path apiJs = Path.of(this.outputDir, "vue", "api", moduleName, fileName + ".js");
+            Files.createDirectories(apiJs.getParent());
+            try (BufferedWriter writer = Files.newBufferedWriter(apiJs)) {
+                cfg.getTemplate("vue/api.js.ftl").process(root, writer);
+            }
+
+            Path indexVue = Path.of(this.outputDir, "vue", "views", moduleName, fileName ,"index.vue");
+            Files.createDirectories(indexVue.getParent());
+            try (BufferedWriter writer = Files.newBufferedWriter(indexVue)) {
+                cfg.getTemplate("vue/index.vue.ftl").process(root, writer);
+            }
         }
     }
 
