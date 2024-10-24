@@ -48,7 +48,7 @@
     <form class="flex flex-col gap-5 pt-2">
         <#list FIELDS as f>
         <FloatLabel variant="on">
-            <InputText id="${f.FIELD_NAME}" fluid v-model="formData.${f.FIELD_NAME}" :disabled="formData.id != null"
+            <InputText id="${f.FIELD_NAME}" fluid v-model="formData.${f.FIELD_NAME}"
                        :invalid="$v.${f.FIELD_NAME}.$error"
                        v-tooltip.top="$v.${f.FIELD_NAME}.$errors.map(it=>it.$message).join('\n')"
             />
@@ -74,8 +74,8 @@ import {SORT_ORDER} from "@/utils/cons.js";
 import {useConfirm} from "primevue/useconfirm";
 import {useToast} from "primevue/usetoast";
 import {dicts} from "@/api/system/dicts.js";
-import {email, maxLength, minLength, normalNameEn, required} from '@/utils/i18n-validators'
-import {useVuelidate} from '@vuelidate/core'
+import {required} from '@/utils/i18n-validators';
+import {useVuelidate} from '@vuelidate/core';
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -85,24 +85,24 @@ const queryParams = reactive({
   pageSize: 10,
   sortField: 'updateTime',
   sortOrder: 'DESC',
-})
+});
 
 const tableData = reactive({
   list: [],
   totalCount: 0,
   loading: false,
   selection: []
-})
-const formData = ref({})
+});
+const formData = ref({});
 const formDialog = reactive({
   title: null,
   open: false
-})
+});
 const rules = computed(() => ({
     <#list FIELDS as f>
     ${f.FIELD_NAME}:{},
     </#list>
-}))
+}));
 
 const $v = useVuelidate(rules, formData, {$lazy: true});
 
