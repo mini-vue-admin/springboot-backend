@@ -369,7 +369,7 @@ public class CodeGenerator {
                    SELECT TABLE_NAME, TABLE_TYPE, TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = '\{schema}'
                    """;
             if (StringUtils.hasText(tableName)) {
-                sql += " AND TABLE_NAME = ?";
+                sql += " AND TABLE_NAME LIKE CONCAT('%', ?, '%')";
             }
             if (StringUtils.hasText(page.getSortField())) {
                 sql += " ORDER BY " + CaseUtils.toSnakeCase(page.getSortField());
@@ -395,6 +395,9 @@ public class CodeGenerator {
             PreparedStatement countStatement = connection.prepareStatement(STR."""
                 select count(1) from (\{sql}) a
             """);
+            if (StringUtils.hasText(tableName)) {
+                countStatement.setString(1, tableName);
+            }
             ResultSet countResult = countStatement.executeQuery();
             if (countResult.next()) {
                 page.setTotalCount(countResult.getLong(1));

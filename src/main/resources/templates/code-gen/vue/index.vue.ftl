@@ -22,13 +22,19 @@
                :loading="tableData.loading"
                @sort="handleQuery" sort-field="updateTime" :sort-order="-1"
                selectionMode="multiple"
-               dataKey="id">
-        <#list FIELDS as f>
-            <Column field="${f.FIELD_NAME}" header="${f.FIELD_SHORT_COMMENT}"></Column>
-        </#list>
-      <Column field="createTime" header="创建时间"></Column>
-      <Column field="updateTime" header="修改时间" sortable></Column>
-      <Column header="操作">
+               dataKey="id"
+               :pt="{
+                  bodyRow: {
+                    style:'cursor:default'
+                  }
+                }">
+      <Column selectionMode="multiple" header-style="width: 3rem"/>
+  <#list FIELDS as f>
+      <Column field="${f.FIELD_NAME}" header="${f.FIELD_SHORT_COMMENT}"></Column>
+  </#list>
+      <Column field="createTime" header="创建时间" sortable header-style="width: 13rem"></Column>
+      <Column field="updateTime" header="修改时间" sortable header-style="width: 13rem"></Column>
+      <Column header="操作" header-style="width: 10rem">
         <template #body="slotProps">
           <Button text label="修改" @click.stop="handleUpdate(slotProps.data)"/>
           <Button text label="删除" severity="danger" @click.stop="handleDelete(slotProps.data)"/>
@@ -46,17 +52,15 @@
   <Drawer v-model:visible="formDialog.open" :header="formDialog.title" position="right" :dismissable="false"
           class="!w-full md:!w-80 lg:!w-[30rem]">
     <form class="flex flex-col gap-5 pt-2">
-        <#list FIELDS as f>
-        <FloatLabel variant="on">
-            <InputText id="${f.FIELD_NAME}" fluid v-model="formData.${f.FIELD_NAME}"
-                       :invalid="$v.${f.FIELD_NAME}.$error"
-                       v-tooltip.top="$v.${f.FIELD_NAME}.$errors.map(it=>it.$message).join('\n')"
-            />
-            <label for="${f.FIELD_NAME}">${f.FIELD_SHORT_COMMENT}</label>
-        </FloatLabel>
-        </#list>
-
-
+      <#list FIELDS as f>
+      <FloatLabel variant="on">
+          <InputText id="${f.FIELD_NAME}" fluid v-model="formData.${f.FIELD_NAME}"
+                     :invalid="$v.${f.FIELD_NAME}.$error"
+                     v-tooltip.top="$v.${f.FIELD_NAME}.$errors.map(it=>it.$message).join('\n')"
+          />
+          <label for="${f.FIELD_NAME}">${f.FIELD_SHORT_COMMENT}</label>
+      </FloatLabel>
+      </#list>
 
       <div class="flex flex-wrap justify-center gap-5">
         <Button label="提交" aria-label="Submit" @click="handleSubmit"/>

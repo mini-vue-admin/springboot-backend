@@ -57,12 +57,14 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public Role create(Role role) {
+        validate(role);
         return roleRepo.save(role);
     }
 
     @Transactional
     @Override
     public Role update(Role role) {
+        validate(role);
         Role item = roleRepo.findById(role.getId()).orElseThrow(NotFoundException::new);
         item.copyNonNulls(role);
         return roleRepo.save(item);

@@ -22,9 +22,6 @@ create table sys_user
     primary key (id)
 ) engine = innodb comment = '用户表';
 
-insert into sys_user
-values ("019240b6-44e3-72e8-ab14-bc50df7253b9", 'admin', sysdate(), null, null, 'admin', '系统管理员', null, null, 'U', null, 'admin', 1);
-
 -- ----------------------------
 -- 角色表
 -- ----------------------------
@@ -42,8 +39,6 @@ create table sys_role
     primary key (id)
 ) engine = innodb comment = '角色表';
 
-insert into sys_role
-values ("019240b6-44e3-72e8-ab14-bc50dff40c8a", 'admin', sysdate(), null, null, '管理员', 'admin', null);
 
 -- ----------------------------
 -- 角色用户表
@@ -128,13 +123,13 @@ create table sys_dict_data
     dict_value  varchar(100) default '' comment '字典键值',
     order_num   int(4)       default 1 comment '字典排序',
     css_class   varchar(100) comment '样式属性',
-    as_default  char(1)   default '0' comment '是否默认(否:0, 是:1)',
+    as_default  bit(1)   default 0 comment '是否默认(否:0, 是:1)',
     status      char(1)      default '1' comment '状态(停用:0, 正常:1)',
     primary key (id)
 ) engine = innodb comment = '字典数据表';
 
 -- ----------------------------
--- 参数配置表
+-- 系统配置表
 -- ----------------------------
 drop table if exists sys_config;
 create table sys_config
@@ -144,13 +139,13 @@ create table sys_config
     create_time  datetime comment '创建时间',
     update_by    varchar(64)  default '' comment '更新者',
     update_time  datetime comment '更新时间',
-    config_name  varchar(100) default '' comment '参数名称',
+    config_name  varchar(100) default '' comment '配置名称',
     remark       varchar(255) comment '备注',
-    config_key   varchar(100) default '' comment '参数键名',
-    config_value varchar(500) default '' comment '参数键值',
-    config_type  char(1)      default '1' comment '参数类型(系统内置:0, 用户定义:1)',
+    config_key   varchar(100) default '' comment '配置键名',
+    config_value varchar(500) default '' comment '配置键值',
+    config_type  char(1)      default '1' comment '配置类型(系统内置:0, 用户定义:1)',
     primary key (id)
-) engine = innodb comment = '参数配置表';
+) engine = innodb comment = '系统配置表';
 
 
 -- ----------------------------

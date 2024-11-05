@@ -44,7 +44,7 @@ public class ConfigServiceImpl implements ConfigService {
     private void validate(Config config) {
         configRepo.findByConfigKey(config.getConfigKey()).ifPresent(exist -> {
             if (config.getId() == null || !Objects.equals(exist.getId(), config.getId())) {
-                throw new BusinessException("配置键已存在");
+                throw new BusinessException("配置键名已存在");
             }
         });
     }

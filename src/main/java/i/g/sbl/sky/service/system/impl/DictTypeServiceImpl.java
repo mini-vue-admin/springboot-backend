@@ -47,12 +47,14 @@ public class DictTypeServiceImpl implements DictTypeService {
     @Transactional
     @Override
     public DictType create(DictType dictType) {
+        validate(dictType);
         return dictTypeRepo.save(dictType);
     }
 
     @Transactional
     @Override
     public DictType update(DictType dictType) {
+        validate(dictType);
         DictType item = dictTypeRepo.findById(dictType.getId()).orElseThrow(NotFoundException::new);
         item.copyNonNulls(dictType);
         return dictTypeRepo.save(item);

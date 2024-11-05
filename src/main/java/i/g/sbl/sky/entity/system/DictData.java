@@ -1,5 +1,6 @@
 package i.g.sbl.sky.entity.system;
 
+import i.g.sbl.sky.basic.cons.system.Status;
 import i.g.sbl.sky.basic.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -9,12 +10,10 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
-import i.g.sbl.sky.basic.cons.system.AsDefault;
-import i.g.sbl.sky.basic.cons.system.Status;
 
 /**
-* 字典数据表
-*/
+ * 字典数据表
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
@@ -50,7 +49,7 @@ public class DictData extends BaseEntity {
     /**
      * 是否默认(否:0, 是:1)
      */
-    private AsDefault asDefault;
+    private Boolean asDefault;
 
     /**
      * 状态(停用:0, 正常:1)

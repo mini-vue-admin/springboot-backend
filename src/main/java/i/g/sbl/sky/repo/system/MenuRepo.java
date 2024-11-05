@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static i.g.sbl.sky.entity.system.QMenu.menu;
 import static i.g.sbl.sky.entity.system.QRoleMenu.roleMenu;
@@ -62,4 +63,16 @@ public interface MenuRepo extends JpaRepository<Menu, String>, JpaSpecificationE
     }
 
     List<Menu> findByParentId(String id);
+
+    Optional<Menu> findByMenuName(String menuName);
+
+    default List<Menu> findByParentId(String id, boolean recursive) {
+        List<Menu> children = this.findByParentId(id);
+        if (recursive) {
+            children.forEach(child -> {
+                child.setChildren(this.findByParentId(child.getId(), true));
+            });
+        }
+        return children;
+    }
 }

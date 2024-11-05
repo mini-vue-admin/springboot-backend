@@ -6,6 +6,7 @@ import i.g.sbl.sky.basic.model.PageData;
 import i.g.sbl.sky.entity.system.Menu;
 import i.g.sbl.sky.entity.system.vo.MenuQuery;
 import i.g.sbl.sky.repo.system.MenuRepo;
+import i.g.sbl.sky.repo.system.RoleMenuRepo;
 import i.g.sbl.sky.service.system.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuRepo menuRepo;
+    @Autowired
+    private RoleMenuRepo roleMenuRepo;
 
 
     @Override
@@ -28,7 +31,14 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> findAll(MenuQuery query) {
-        return menuRepo.findByFilter(query);
+        List<Menu> menus = menuRepo.findByFilter(query);
+        if (query.getChildRecursion() != null && query.getChildRecursion()) {
+            for (Menu menu : menus) {
+                List<Menu> children = menuRepo.findByParentId(menu.getId(), true);
+                menu.setChildren(children);
+            }
+        }
+        return menus;
     }
 
     @Override
@@ -36,7 +46,7 @@ public class MenuServiceImpl implements MenuService {
         PageData<Menu> page = menuRepo.findByFilter(query, pageable);
         if (query.getChildRecursion() != null && query.getChildRecursion()) {
             for (Menu menu : page.getList()) {
-                List<Menu> children = menuRepo.findByParentId(menu.getId());
+                List<Menu> children = menuRepo.findByParentId(menu.getId(), true);
                 menu.setChildren(children);
             }
         }
@@ -44,8 +54,18 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private void validate(Menu menu) {
+        menuRepo.findByMenuName(menu.getMenuName()).ifPresent(exist -> {
+            if (menu.getId() == null || !Objects.equals(exist.getId(), menu.getId())) {
+                throw new BusinessException("菜单名称已存在");
+            }
+        });
         if (Objects.equals(menu.getId(), menu.getParentId())) {
             throw new BusinessException("禁止设置自身为父节点");
+        }
+        List<Menu> children = menuRepo.findByParentId(menu.getId(), true);
+        if (children.stream().anyMatch(it -> it.getId().equals(menu.getParentId()))) {
+            throw new BusinessException("禁止设置自己的子节点为父节点");
+
         }
     }
 
@@ -68,12 +88,17 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     @Override
     public void delete(String id) {
+        List<Menu> children = menuRepo.findByParentId(id);
+        if (!children.isEmpty()) {
+            throw new BusinessException("无法删除当前菜单，请先删除所有子菜单");
+        }
+        roleMenuRepo.deleteByMenuId(id);
         menuRepo.deleteById(id);
     }
 
     @Transactional
     @Override
     public void delete(List<String> id) {
-        menuRepo.deleteAllByIdInBatch(id);
+        id.forEach(this::delete);
     }
 }

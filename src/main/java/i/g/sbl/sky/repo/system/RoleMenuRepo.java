@@ -28,4 +28,7 @@ public interface RoleMenuRepo extends JpaRepository<RoleMenu, RoleMenu.RoleMenuI
 
     @Modifying
     void deleteByRoleId(String roleId);
+
+    @Modifying
+    void deleteByMenuId(String menuId);
 }
