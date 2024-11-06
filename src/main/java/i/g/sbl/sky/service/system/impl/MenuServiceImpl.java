@@ -23,7 +23,6 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private RoleMenuRepo roleMenuRepo;
 
-
     @Override
     public Optional<Menu> findById(String id) {
         return menuRepo.findById(id);

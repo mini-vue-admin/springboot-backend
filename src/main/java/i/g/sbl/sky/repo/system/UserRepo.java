@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Optional;
 
+import static i.g.sbl.sky.basic.utils.SqlUtils.likeConcat;
 import static i.g.sbl.sky.entity.system.QRoleUser.roleUser;
 import static i.g.sbl.sky.entity.system.QUser.user;
 
@@ -64,18 +65,18 @@ public interface UserRepo extends JpaRepository<User, String>, JpaSpecificationE
                             .select(user).distinct()
                             .from(user)
                             .leftJoin(roleUser)
-                            .on(user.id.eq(roleUser.userId))
+                            .on(user.id.eq(roleUser.userId).and(roleUser.roleId.eq(query.getRoleId())))
                             .where(roleUser.roleId.ne(query.getRoleId()).or(roleUser.roleId.isNull()))
                             .where(StringUtils.hasText(query.getKeyword()) ?
-                                    user.username.like(query.getKeyword())
-                                            .or(user.nickname.like(query.getKeyword()))
-                                            .or(user.email.like(query.getKeyword()))
-                                            .or(user.phone.like(query.getKeyword()))
+                                    user.username.like(likeConcat(query.getKeyword()))
+                                            .or(user.nickname.like(likeConcat(query.getKeyword())))
+                                            .or(user.email.like(likeConcat(query.getKeyword())))
+                                            .or(user.phone.like(likeConcat(query.getKeyword())))
                                     : null)
-                            .where(StringUtils.hasText(query.getUsername()) ? user.username.like(query.getUsername()) : null)
-                            .where(StringUtils.hasText(query.getNickname()) ? user.nickname.like(query.getNickname()) : null)
-                            .where(StringUtils.hasText(query.getEmail()) ? user.email.like(query.getEmail()) : null)
-                            .where(StringUtils.hasText(query.getPhone()) ? user.phone.like(query.getPhone()) : null)
+                            .where(StringUtils.hasText(query.getUsername()) ? user.username.like(likeConcat(query.getUsername())) : null)
+                            .where(StringUtils.hasText(query.getNickname()) ? user.nickname.like(likeConcat(query.getNickname())) : null)
+                            .where(StringUtils.hasText(query.getEmail()) ? user.email.like(likeConcat(query.getEmail())) : null)
+                            .where(StringUtils.hasText(query.getPhone()) ? user.phone.like(likeConcat(query.getPhone())) : null)
                             .where(query.getStatus() != null ? user.status.eq(query.getStatus()) : null),
                     pageable.toPageRequest()
             );
@@ -89,15 +90,15 @@ public interface UserRepo extends JpaRepository<User, String>, JpaSpecificationE
                             .on(user.id.eq(roleUser.userId))
                             .where(roleUser.roleId.eq(query.getRoleId()))
                             .where(StringUtils.hasText(query.getKeyword()) ?
-                                    user.username.like(query.getKeyword())
-                                            .or(user.nickname.like(query.getKeyword()))
-                                            .or(user.email.like(query.getKeyword()))
-                                            .or(user.phone.like(query.getKeyword()))
+                                    user.username.like(likeConcat(query.getKeyword()))
+                                            .or(user.nickname.like(likeConcat(query.getKeyword())))
+                                            .or(user.email.like(likeConcat(query.getKeyword())))
+                                            .or(user.phone.like(likeConcat(query.getKeyword())))
                                     : null)
-                            .where(StringUtils.hasText(query.getUsername()) ? user.username.like(query.getUsername()) : null)
-                            .where(StringUtils.hasText(query.getNickname()) ? user.nickname.like(query.getNickname()) : null)
-                            .where(StringUtils.hasText(query.getEmail()) ? user.email.like(query.getEmail()) : null)
-                            .where(StringUtils.hasText(query.getPhone()) ? user.phone.like(query.getPhone()) : null)
+                            .where(StringUtils.hasText(query.getUsername()) ? user.username.like(likeConcat(query.getUsername())) : null)
+                            .where(StringUtils.hasText(query.getNickname()) ? user.nickname.like(likeConcat(query.getNickname())) : null)
+                            .where(StringUtils.hasText(query.getEmail()) ? user.email.like(likeConcat(query.getEmail())) : null)
+                            .where(StringUtils.hasText(query.getPhone()) ? user.phone.like(likeConcat(query.getPhone())) : null)
                             .where(query.getStatus() != null ? user.status.eq(query.getStatus()) : null),
                     pageable.toPageRequest()
             );

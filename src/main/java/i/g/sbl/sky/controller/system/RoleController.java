@@ -53,6 +53,13 @@ public class RoleController {
         return ResponseData.success(role);
     }
 
+    @Operation(summary = "根据RoleKey获取")
+    @GetMapping("roleKey/{key}")
+    public ResponseData<Role> getByRoleKey(@PathVariable("key") String key) {
+        Optional<Role> role = roleService.findByRokeKey(key);
+        return ResponseData.success(role);
+    }
+
     @Operation(summary = "创建")
     @PostMapping
     public ResponseData<Role> create(@RequestBody Role role) {
@@ -134,7 +141,7 @@ public class RoleController {
 
     @Operation(summary = "角色菜单-分页查询")
     @GetMapping("{id}/menus")
-    public ResponseData<PageData<Menu>> getMenuPage(
+    public ResponseData<PageData<Menu>> getRoleMenuPage(
             @PathVariable("id") String id,
             @Parameter(description = "页号", required = true) @RequestParam(name = "pageIndex", defaultValue = "1") int pageIndex,
             @Parameter(description = "分页大小", required = true) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
@@ -145,7 +152,7 @@ public class RoleController {
         MenuQuery query = new MenuQuery();
         query.setRoleId(id);
         query.setParentId(parentId);
-        PageData<Menu> page = roleService.findMenuPage(query, PageData.of(pageIndex, pageSize, sortField, sortOrder));
+        PageData<Menu> page = roleService.findRoleMenuPage(query, PageData.of(pageIndex, pageSize, sortField, sortOrder));
         return ResponseData.success(page);
     }
 

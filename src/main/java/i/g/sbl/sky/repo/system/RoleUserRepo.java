@@ -6,6 +6,7 @@ import i.g.sbl.sky.entity.system.RoleUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface RoleUserRepo extends JpaRepository<RoleUser, RoleUser.RoleUserI
         );
         return PageData.of(page);
     }
+
+    void deleteByUserId(String userId);
+
+    @Modifying
+    void deleteByRoleId(String roleId);
 }

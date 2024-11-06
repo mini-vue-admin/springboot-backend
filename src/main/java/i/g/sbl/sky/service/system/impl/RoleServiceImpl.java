@@ -73,13 +73,15 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public void delete(String id) {
+        roleUserRepo.deleteByRoleId(id);
+        roleMenuRepo.deleteByRoleId(id);
         roleRepo.deleteById(id);
     }
 
     @Transactional
     @Override
     public void delete(List<String> id) {
-        roleRepo.deleteAllByIdInBatch(id);
+        id.forEach(this::delete);
     }
 
     @Override
@@ -111,11 +113,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PageData<Menu> findMenuPage(MenuQuery query, PageData<User> pageable) {
+    public PageData<Menu> findRoleMenuPage(MenuQuery query, PageData<User> pageable) {
         PageData<Menu> page = menuRepo.findRoleMenus(query, pageable);
         if (query.getChildRecursion() != null && query.getChildRecursion()) {
             for (Menu menu : page.getList()) {
-                List<Menu> children = menuRepo.findByParentId(menu.getId());
+                query.setParentId(menu.getId());
+                List<Menu> children = menuRepo.findRoleMenus(query);
                 menu.setChildren(children);
             }
         }
@@ -139,5 +142,10 @@ public class RoleServiceImpl implements RoleService {
         for (String member : members) {
             roleMenuRepo.deleteById(new RoleMenu.RoleMenuId(member, roleId));
         }
+    }
+
+    @Override
+    public Optional<Role> findByRokeKey(String key) {
+        return roleRepo.findByRoleKey(key);
     }
 }

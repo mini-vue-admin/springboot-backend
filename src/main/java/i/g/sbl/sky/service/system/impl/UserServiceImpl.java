@@ -10,6 +10,7 @@ import i.g.sbl.sky.entity.system.Role;
 import i.g.sbl.sky.entity.system.User;
 import i.g.sbl.sky.entity.system.UserPassword;
 import i.g.sbl.sky.entity.system.vo.UserQuery;
+import i.g.sbl.sky.repo.system.RoleUserRepo;
 import i.g.sbl.sky.repo.system.UserPasswordRepo;
 import i.g.sbl.sky.repo.system.UserRepo;
 import i.g.sbl.sky.service.system.ConfigService;
@@ -36,6 +37,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserPasswordRepo userPasswordRepo;
+    @Autowired
+    private RoleUserRepo roleUserRepo;
 
 
     @Override
@@ -100,13 +103,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void delete(String id) {
+        roleUserRepo.deleteByUserId(id);
         userRepo.deleteById(id);
     }
 
     @Transactional
     @Override
     public void delete(List<String> id) {
-        userRepo.deleteAllByIdInBatch(id);
+        id.forEach(this::delete);
     }
 
     @Override

@@ -38,11 +38,13 @@ public interface RoleService {
     @Transactional
     void deleteMember(String roleId, MemberIds userIds);
 
-    PageData<Menu> findMenuPage(MenuQuery query, PageData<User> page);
+    PageData<Menu> findRoleMenuPage(MenuQuery query, PageData<User> page);
 
     @Transactional
     void addMenu(String roleId, MemberIds menuIds);
 
     @Transactional
     void deleteMenu(String roleId, MemberIds menuIds);
+
+    Optional<Role> findByRokeKey(String key);
 }

@@ -48,6 +48,19 @@ public interface MenuRepo extends JpaRepository<Menu, String>, JpaSpecificationE
         return PageData.of(page);
     }
 
+    default List<Menu> findRoleMenus(MenuQuery query) {
+      return   findAll(
+                new JPAQuery<>()
+                        .select(menu)
+                        .from(menu)
+                        .innerJoin(roleMenu)
+                        .on(menu.id.eq(roleMenu.menuId))
+                        .where(roleMenu.roleId.eq(query.getRoleId()))
+                        .where(StringUtils.hasText(query.getParentId()) ? menu.parentId.eq(query.getParentId()) : null)
+        );
+
+    }
+
     default PageData<Menu> findRoleMenus(MenuQuery query, PageData<User> pageable) {
         Page<Menu> page = findAll(
                 new JPAQuery<>()
