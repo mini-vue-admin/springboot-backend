@@ -43,6 +43,7 @@ public interface RoleRepo extends JpaRepository<Role, String>, JpaSpecificationE
     default List<Role> findByUserId(String userId) {
         return findAll(new JPAQuery<>()
                 .select(role)
+                .from(role)
                 .innerJoin(roleUser)
                 .on(role.id.eq(roleUser.roleId))
                 .where(roleUser.userId.eq(userId))
